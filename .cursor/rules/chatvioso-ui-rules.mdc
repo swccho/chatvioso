@@ -1,0 +1,816 @@
+---
+description: Chatvioso frontend UI refactor — visual consistency, component reusability, layout, and UX. Apply when editing frontend UI.
+globs: frontend/**/*.tsx, frontend/**/*.css
+alwaysApply: false
+---
+
+# Chatvioso UI Refactor Rules
+
+## Goal
+
+Refactor the **Chatvioso frontend UI only** from scratch into a clean, modern, scalable, production-quality chat application interface.
+
+This refactor must focus on:
+
+- visual consistency
+- component reusability
+- clean file structure
+- responsive layouts
+- strong UX for chat workflows
+- maintainable frontend architecture
+
+Do **not** change backend business logic unless UI integration requires it.
+
+---
+
+# 1. Core UI Principles
+
+## 1.1 Design direction
+
+The UI must feel:
+
+- modern
+- minimal
+- fast
+- clean
+- premium
+- product-grade
+
+Reference style direction:
+
+- Linear-style cleanliness
+- WhatsApp/Slack/Discord-inspired chat usability
+- soft modern dashboard feel
+- strong spacing and typography hierarchy
+- subtle shadows and borders
+- no clutter
+- no random colors
+- no overly decorative gradients unless intentionally used in hero/branding sections
+
+## 1.2 UI priorities
+
+When building or refactoring UI, prioritize in this order:
+
+1. usability
+2. clarity
+3. consistency
+4. responsiveness
+5. polish
+6. animation
+
+Animations should enhance the experience, not distract from it.
+
+## 1.3 UI scope
+
+The refactor covers only frontend UI layers such as:
+
+- app shell
+- sidebar
+- topbar
+- chat list
+- chat conversation area
+- message bubbles
+- composer
+- profile/settings panels
+- auth pages
+- empty states
+- loading states
+- modals
+- dropdowns
+- search UI
+- attachment UI
+- mobile responsiveness
+
+---
+
+# 2. Code Quality Rules
+
+## 2.1 Component-first architecture
+
+All UI must be built with reusable components.
+
+Avoid page-specific duplicated markup.
+
+If a block appears more than once, extract it into a shared component.
+
+Examples:
+
+- buttons
+- inputs
+- avatars
+- badges
+- chat items
+- message bubbles
+- section headers
+- empty states
+- drawers
+- dialogs
+- tabs
+- cards
+
+## 2.2 Keep components focused
+
+Each component should do one clear job.
+
+Good:
+- `ChatSidebar`
+- `ChatListItem`
+- `MessageBubble`
+- `MessageComposer`
+- `ConversationHeader`
+
+Bad:
+- giant components that manage layout, state, rendering, and business logic together
+
+## 2.3 Separate UI from logic
+
+Keep visual components separate from feature/business logic.
+
+Use this split where possible:
+
+- presentational UI components
+- hooks/composables/store logic
+- API/service layer
+- page/container components
+
+## 2.4 Avoid massive files
+
+Rules:
+
+- component file should ideally stay under ~200 lines
+- page/container should ideally stay under ~300 lines
+- extract repeated logic early
+- extract repeated markup early
+
+## 2.5 No hardcoded mock styling chaos
+
+Do not hardcode random:
+
+- colors
+- spacing
+- font sizes
+- border radius
+- shadow values
+
+Use shared design tokens or central Tailwind conventions.
+
+---
+
+# 3. Folder Structure Rules
+
+Use a feature-driven structure with shared UI foundation.
+
+Example structure:
+
+```txt
+src/
+  app/
+    layouts/
+    providers/
+    router/
+  components/
+    ui/
+      button/
+      input/
+      modal/
+      avatar/
+      badge/
+      dropdown/
+      tabs/
+      tooltip/
+    shared/
+      app-shell/
+      empty-state/
+      loading/
+      page-header/
+  features/
+    auth/
+      components/
+      pages/
+      hooks/
+      services/
+      types/
+    chats/
+      components/
+      pages/
+      hooks/
+      services/
+      types/
+    messages/
+      components/
+      hooks/
+      services/
+      types/
+    contacts/
+      components/
+      hooks/
+      services/
+      types/
+    settings/
+      components/
+      pages/
+      hooks/
+      services/
+  lib/
+    utils/
+    constants/
+    helpers/
+  styles/
+    globals.css
+    tokens.css
+```
+
+## Structure rules
+
+* `components/ui` = small reusable design-system components
+* `components/shared` = shared app-level composed blocks
+* `features/*` = feature-specific UI and logic
+* `lib/*` = utilities, constants, helpers
+* keep pages thin
+* keep business logic out of shared UI where possible
+
+---
+
+# 4. Styling Rules
+
+## 4.1 Use a single design system
+
+All styling must follow one unified design system.
+
+Define and consistently use:
+
+* spacing scale
+* typography scale
+* radius scale
+* shadow scale
+* color roles
+* state styles
+* z-index layers
+
+## 4.2 Color rules
+
+Use a restrained color palette.
+
+Recommended roles:
+
+* background
+* surface
+* surface-muted
+* border
+* primary
+* primary-hover
+* text-primary
+* text-secondary
+* text-muted
+* success
+* warning
+* danger
+
+Rules:
+
+* avoid too many accent colors
+* use color purposefully
+* primary color should represent the brand
+* destructive actions must always look destructive
+* muted text should still remain readable
+
+## 4.3 Spacing rules
+
+Use consistent spacing only.
+
+Suggested spacing scale:
+
+* 4
+* 8
+* 12
+* 16
+* 20
+* 24
+* 32
+* 40
+* 48
+
+Avoid arbitrary spacing like:
+
+* 13px
+* 27px
+* random margins/paddings without system meaning
+
+## 4.4 Border radius rules
+
+Use a consistent radius system.
+
+Suggested:
+
+* small: inputs, tags
+* medium: cards
+* large: modals, composer, panels
+* full: avatars, pills
+
+Do not mix too many different rounding styles.
+
+## 4.5 Shadow rules
+
+Use subtle shadows only.
+
+Rules:
+
+* cards: soft shadow
+* modals/dropdowns: slightly elevated shadow
+* avoid heavy dark shadows
+* prefer borders + subtle elevation over loud effects
+
+---
+
+# 5. Typography Rules
+
+## 5.1 Typography hierarchy
+
+Use clear, consistent text hierarchy.
+
+Levels should include:
+
+* page title
+* section title
+* card title
+* body text
+* secondary text
+* caption/meta text
+
+## 5.2 Readability first
+
+Rules:
+
+* avoid tiny text for important content
+* avoid overly large text in dense dashboard/chat areas
+* line height must be comfortable
+* text contrast must remain accessible
+
+## 5.3 Font usage
+
+Use one primary UI font family.
+
+Do not mix multiple font families unless branding explicitly requires it.
+
+Use font weights intentionally:
+
+* medium for emphasis
+* semibold for headings
+* regular for body
+* avoid excessive bold everywhere
+
+---
+
+# 6. Layout Rules
+
+## 6.1 App shell consistency
+
+Main app layout should have a clear shell:
+
+* left sidebar
+* main content area
+* optional right details panel
+* top header where appropriate
+
+Layout must be consistent across major screens.
+
+## 6.2 Chat page layout
+
+The chat screen should be structured like a real messaging product:
+
+* left: conversations/sidebar
+* center: active conversation
+* optional right: user info / chat details / attachments
+
+The active conversation area should always prioritize readability and sending messages quickly.
+
+## 6.3 Responsive layout
+
+UI must be fully responsive.
+
+Required breakpoints behavior:
+
+### Desktop
+
+* full multi-column layout
+
+### Tablet
+
+* sidebar may collapse
+* detail panel may slide in or overlay
+
+### Mobile
+
+* one primary panel at a time
+* chat list and conversation should switch cleanly
+* composer must remain easy to use
+* headers and actions must stay accessible
+
+## 6.4 No broken height behavior
+
+Chat screens must properly handle viewport height.
+
+Rules:
+
+* sidebar scrolls independently
+* message list scrolls independently
+* composer stays anchored
+* header stays stable
+* avoid double-scroll bugs
+
+---
+
+# 7. Component Rules
+
+## 7.1 Buttons
+
+All buttons must use shared button variants.
+
+Required variants:
+
+* primary
+* secondary
+* ghost
+* outline
+* destructive
+* icon-only
+
+Rules:
+
+* consistent heights
+* consistent padding
+* consistent icon sizing
+* proper disabled states
+* loading states supported
+
+## 7.2 Inputs
+
+All inputs must use shared input components.
+
+Rules:
+
+* clear focus states
+* consistent height
+* good placeholder contrast
+* validation states
+* error message support
+* accessible labels
+
+## 7.3 Cards and panels
+
+Cards should be used sparingly and consistently.
+
+Rules:
+
+* not every block needs a card
+* use cards where grouping helps clarity
+* chat interfaces should not feel overly boxed
+
+## 7.4 Avatars
+
+Avatar rules:
+
+* consistent sizes
+* fallback initials
+* image cropping must be clean
+* online/offline indicator optional but consistent
+
+## 7.5 Icons
+
+Use one icon library consistently.
+
+Rules:
+
+* icon size must be standardized
+* icons should support actions, not decorate everything
+* avoid mixing multiple icon styles
+
+---
+
+# 8. Chat-Specific UX Rules
+
+## 8.1 Conversation list
+
+Chat list items should clearly show:
+
+* avatar
+* name
+* last message preview
+* time
+* unread count
+* active state
+
+Rules:
+
+* active conversation must be obvious
+* unread state must be obvious
+* hover states should be subtle
+* list density should remain readable
+
+## 8.2 Message bubbles
+
+Message UI must clearly distinguish:
+
+* sender vs receiver
+* timestamp
+* delivery/read status if available
+* attachments if present
+
+Rules:
+
+* spacing between grouped messages should feel natural
+* messages from same sender should visually group
+* long text should wrap elegantly
+* code/text/media attachments should render cleanly
+
+## 8.3 Composer
+
+Message composer must support a premium UX.
+
+Rules:
+
+* always easy to access
+* strong focus state
+* attachment button placement must be obvious
+* send button must be prominent
+* input grows gracefully for multiline text
+* do not let the composer become visually heavy
+
+## 8.4 Empty states
+
+Chat empty states must be intentional.
+
+Examples:
+
+* no chat selected
+* no messages yet
+* no search results
+* no contacts
+* no attachments
+
+Rules:
+
+* always include a helpful message
+* optionally include a CTA
+* no dead blank screens
+
+## 8.5 Loading and skeleton states
+
+Use skeletons or graceful loading placeholders.
+
+Never show ugly layout jumps.
+
+Required for:
+
+* chat list
+* message panel
+* profile panel
+* search results
+
+---
+
+# 9. State & Interaction Rules
+
+## 9.1 All interactive elements need proper states
+
+Every interactive element must support:
+
+* default
+* hover
+* active
+* focus
+* disabled
+* loading if applicable
+
+## 9.2 Focus accessibility
+
+Keyboard focus must be visible.
+
+Never remove focus styles without replacing them with accessible alternatives.
+
+## 9.3 Dropdowns and modals
+
+Rules:
+
+* consistent overlay behavior
+* proper close behavior
+* escape key support
+* click outside support where appropriate
+* clear action hierarchy
+* destructive confirmation where needed
+
+## 9.4 Motion rules
+
+Use subtle motion only.
+
+Allowed:
+
+* fade
+* slide
+* scale-in
+* soft panel transitions
+* skeleton shimmer
+
+Avoid:
+
+* bouncy unnecessary effects
+* dramatic page animations
+* distracting motion in chat flow
+
+---
+
+# 10. Accessibility Rules
+
+## 10.1 Must-have accessibility baseline
+
+All UI work must include:
+
+* semantic HTML
+* label associations
+* keyboard navigation
+* visible focus
+* accessible button usage
+* sufficient contrast
+* aria attributes where needed
+
+## 10.2 Click target sizes
+
+Buttons and icon actions must be comfortably clickable, especially on mobile.
+
+## 10.3 Do not rely only on color
+
+Unread, error, active, and success states should not rely on color alone.
+
+Use:
+
+* icons
+* labels
+* badges
+* weight
+* borders
+* indicators
+
+---
+
+# 11. Reusability Rules
+
+## 11.1 Before creating a new component
+
+Always check:
+
+* does a shared component already exist?
+* can this be made variant-based instead?
+* can props solve this instead of duplication?
+
+## 11.2 Variants over duplication
+
+Prefer:
+
+* `Button variant="primary"`
+* `Badge variant="success"`
+* `Panel size="sm"`
+
+Instead of creating many separate near-duplicate components.
+
+---
+
+# 12. Page Rules
+
+## 12.1 Each page must have
+
+* clear purpose
+* clear visual hierarchy
+* stable spacing
+* loading state
+* empty state
+* error state if data-driven
+
+## 12.2 Do not overcrowd pages
+
+Every page should feel focused.
+
+If too many actions exist:
+
+* group them
+* use dropdowns
+* use tabs
+* use drawers
+* use modals carefully
+
+---
+
+# 13. Naming Rules
+
+## 13.1 Component naming
+
+Use clear, descriptive names.
+
+Good:
+
+* `ChatSidebar`
+* `ConversationPanel`
+* `MessageComposer`
+* `UserProfileDrawer`
+
+Bad:
+
+* `Box1`
+* `NewSection`
+* `TempChat`
+* `FinalComponent`
+
+## 13.2 CSS/Tailwind conventions
+
+Class usage should be readable and intentional.
+
+Group classes by purpose when possible:
+
+* layout
+* spacing
+* typography
+* visuals
+* states
+
+Avoid unreadable class chaos.
+
+---
+
+# 14. Refactor Rules
+
+## 14.1 During refactor
+
+When replacing old UI:
+
+* do not copy old messy structure
+* rebuild with better composition
+* preserve functionality
+* improve readability
+* improve responsiveness
+* improve consistency
+
+## 14.2 No partial inconsistency
+
+If a component is redesigned, connected nearby components should also be aligned visually.
+
+Avoid half-old, half-new design language inside the same flow.
+
+## 14.3 Leave code better than before
+
+Every refactor should improve at least one of:
+
+* readability
+* reusability
+* visual consistency
+* accessibility
+* responsiveness
+* maintainability
+
+---
+
+# 15. Definition of Done for UI Work
+
+A UI task is done only if:
+
+* it matches the new design system
+* it is responsive
+* it uses reusable components where appropriate
+* it supports proper states
+* it is accessible
+* it does not introduce duplicated messy code
+* spacing and typography are consistent
+* it looks production-ready
+* it integrates cleanly with existing frontend logic
+
+---
+
+# 16. Strict Do Not Rules
+
+Do not:
+
+* hardcode random colors
+* build giant all-in-one components
+* duplicate UI blocks unnecessarily
+* mix multiple design styles
+* leave inconsistent spacing
+* use weak contrast
+* ignore mobile layout
+* ignore loading/empty/error states
+* add decorative clutter
+* break existing functionality just for visual refactor
+* introduce UI that looks like an admin template if the goal is a modern chat product
+
+---
+
+# 17. Preferred Implementation Mindset
+
+For every screen or component, ask:
+
+1. Is this visually consistent with the rest of Chatvioso?
+2. Is this reusable?
+3. Is this the simplest clean solution?
+4. Is this responsive?
+5. Is this accessible?
+6. Does this feel like a real modern chat product?
+7. Would this still be maintainable in 6 months?
+
+If not, improve it before marking it complete.

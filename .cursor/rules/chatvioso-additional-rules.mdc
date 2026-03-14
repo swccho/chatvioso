@@ -1,0 +1,214 @@
+---
+description: Chatvioso additional rules — environment, logging, rate limiting, pagination, feature flags, code review, errors, accessibility, performance, documentation
+alwaysApply: true
+---
+
+# Additional Project Rules for Chatvioso
+
+These additional rules extend the main project rules and help ensure the system remains maintainable, secure, and production-ready.
+
+---
+
+# 21. Environment & Configuration Rules
+
+All environment-specific configuration must be separated from the application code.
+
+Rules:
+
+- Never hardcode environment values inside the codebase.
+- All environment configuration must be defined in `.env`.
+- Maintain a clean and complete `.env.example` file.
+- Environment configuration must support:
+
+  - development
+  - staging (optional)
+  - production
+
+Examples of environment variables:
+
+- API base URL
+- WebSocket server URL
+- Redis configuration
+- storage configuration
+- mail service credentials
+
+The application should run correctly in any environment by only changing environment variables.
+
+---
+
+# 22. Logging Rules
+
+Logging must provide enough information to debug problems without exposing sensitive data.
+
+Rules:
+
+- Log important system actions.
+- Log unexpected errors with context.
+- Avoid logging sensitive information such as passwords or tokens.
+
+Examples of useful logs:
+
+- failed login attempts
+- permission violations
+- message sending errors
+- realtime connection issues
+- unexpected server exceptions
+
+Logs should help diagnose issues in production.
+
+---
+
+# 23. Rate Limiting Rules
+
+Certain API endpoints must be protected against abuse.
+
+Rate limiting must be applied to:
+
+- login endpoints
+- registration endpoints
+- password reset requests
+- message sending
+- file uploads
+- search APIs
+
+Rate limiting helps prevent:
+
+- brute force attacks
+- spam
+- API abuse
+- denial-of-service attempts
+
+Laravel's built-in rate limiting tools should be used.
+
+---
+
+# 24. Pagination Rules
+
+Large datasets must always be loaded using pagination.
+
+Rules:
+
+- Messages must load with pagination or cursor pagination.
+- Conversation lists must be paginated.
+- Search results must be paginated.
+- Member lists must be paginated.
+
+Never load extremely large datasets in a single request.
+
+Pagination protects both server performance and frontend performance.
+
+---
+
+# 25. Feature Flag Rules
+
+Experimental features should be controlled using feature flags.
+
+Rules:
+
+- New experimental features should be disabled by default.
+- Features can be enabled gradually through configuration.
+
+Examples of features that may use feature flags:
+
+- message reactions
+- threaded conversations
+- voice messages
+- AI assistant features
+
+Feature flags prevent unfinished features from affecting the stable system.
+
+---
+
+# 26. Code Review Rules
+
+Every feature should follow a basic review checklist before being considered complete.
+
+Checklist:
+
+- code follows project conventions
+- no unused imports or variables
+- no debugging logs left in code
+- linting passes
+- TypeScript passes without errors
+- logic is readable and maintainable
+- no unnecessary complexity
+
+Before merging or finalizing a feature, ask:
+
+- Is this code easy to understand?
+- Is this code reusable?
+- Would another developer understand this implementation?
+
+---
+
+# 27. Error Message Rules
+
+Error handling must provide useful feedback without exposing internal details.
+
+Rules:
+
+- API responses must return clear and structured error messages.
+- Internal stack traces must never be exposed to users.
+- Frontend must show friendly and understandable error messages.
+
+Examples:
+
+Bad error message:
+
+```
+500 Internal Server Error
+```
+
+Better error message:
+
+```
+Unable to send message. Please try again.
+```
+
+Good error messages improve user experience and debugging.
+
+---
+
+# 28. Accessibility Rules
+
+Basic accessibility must be respected throughout the application.
+
+Rules:
+
+- all interactive elements must be keyboard accessible
+- inputs must include proper labels
+- buttons must be semantic and accessible
+- dialogs must trap keyboard focus
+- message composer must support keyboard sending
+
+Accessibility improves usability and ensures the application works for more users.
+
+---
+
+# 29. Performance Monitoring Rules
+
+Performance issues should be detectable through monitoring and logs.
+
+Important metrics to observe include:
+
+- API response time
+- message sending latency
+- WebSocket connection stability
+- queue job processing time
+
+When performance degrades, logs and monitoring should help identify the cause.
+
+---
+
+# 30. Documentation Update Rules
+
+Documentation must stay synchronized with the project.
+
+Rules:
+
+- whenever a major feature is added, documentation must be updated
+- API changes must be documented
+- architecture changes must be recorded
+- setup instructions must remain accurate
+
+Documentation should always reflect the current state of the system.

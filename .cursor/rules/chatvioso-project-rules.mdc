@@ -1,0 +1,206 @@
+---
+description: Chatvioso project rules — product direction, tech stack, architecture, coding standards, backend/frontend/realtime rules, security, and definition of done
+alwaysApply: true
+---
+
+# Chatvioso Project Rules
+
+## 1. Project Goal
+
+Chatvioso must be built as a **real product**, not just a demo chat app.
+
+The project should feel like a modern SaaS communication platform with:
+
+- clean architecture
+- scalable backend
+- production-style frontend
+- reusable API design
+- future Flutter compatibility
+
+Every decision should support long-term maintainability and multi-platform growth.
+
+---
+
+## 2. Core Product Direction
+
+Chatvioso is a **workspace-based real-time team communication platform**.
+
+It must support:
+
+- workspaces
+- direct messages
+- group conversations
+- channels
+- realtime messaging
+- file sharing
+- notifications
+- presence
+
+The web app is the **first official client**, not a temporary version.
+
+The backend must be built so future clients (e.g. Flutter desktop/mobile) can use the same API and realtime system.
+
+---
+
+## 3. Tech Stack Rules
+
+### Backend
+- PHP 8.3, Laravel 12, MySQL, Redis
+- Laravel Sanctum, Reverb, Queues
+- S3-compatible storage when file storage is needed
+
+### Frontend
+- Next.js, React, TypeScript, Tailwind CSS, shadcn/ui
+- TanStack Query
+- Zustand only where global client state is truly needed
+
+### General
+Do not introduce unnecessary libraries when the existing stack already solves the problem. Every dependency must have a clear reason.
+
+---
+
+## 4. Architecture Rules
+
+- **API-First**: All important business logic lives in the backend (auth, permissions, message validation, membership, workspace access). Frontend must not contain business-critical logic that cannot be reused by future clients.
+- **Client separation**: Frontend is a client of the API; do not tightly couple it to backend internals.
+- **Realtime by events**: Realtime features must be driven by backend events and broadcasting, not fake local-only UI tricks.
+- **Scalable by default**: Even for MVP, avoid shortcuts that make future scaling difficult.
+
+---
+
+## 5. Coding Rules
+
+### 5.1 General
+Code must be readable, typed where possible, modular, easy to test and extend, consistent. Avoid giant files, deeply nested logic, duplicated code, unclear naming, magic values.
+
+### 5.2 Naming
+Use clear, explicit, professional names: e.g. `CreateWorkspaceAction`, `SendMessageRequest`, `ConversationMemberPolicy`, `useConversationMessages`, `MessageComposer`, `WorkspaceSidebar`. Avoid vague names like `Helper`, `Utils`, `DataThing`, `TempComponent`, `handleAll`, `commonFunction`.
+
+### 5.3 Single responsibility
+Each class, hook, component, service, and action should have one clear responsibility. If a file is hard to describe in one sentence, it is too large or doing too much.
+
+### 5.4 No dead code
+No commented-out old code, unused imports/variables, old unused components, or unmarked placeholder logic.
+
+### 5.5 No hardcoded sensitive or environment values
+Never hardcode API base URLs, secrets, tokens, credentials, storage keys, websocket hosts. Use environment configuration.
+
+---
+
+## 6. Backend Rules
+
+- **Laravel structure**: Use controllers, requests, actions/services, policies, events, listeners, jobs, resources. Controllers stay thin; they coordinate request/response, not large business logic.
+- **Validation**: All input validated via dedicated request classes. Never trust frontend input. Explicit, reusable rules.
+- **Authorization**: All protected actions go through authorization (policies, clear permission rules). Never rely only on hidden frontend buttons.
+- **API responses**: Consistent structured JSON; use API resources. Success and error responses follow a predictable format.
+- **Service/Action layer**: Complex logic in actions/services (e.g. creating workspace, inviting members, creating conversations, sending messages, uploading attachments, marking read).
+- **Queues**: Heavy or async work (notifications, file processing, image optimization, invite emails, cleanup) must use queues. Do not block HTTP requests with queueable work.
+- **Events and broadcasting**: Realtime based on backend events (message sent/updated/deleted, typing, read, presence). Broadcast only necessary data; do not leak private or unrelated information.
+
+---
+
+## 7. Frontend Rules
+
+- **App Router and structure**: Clean Next.js structure — routes, layouts, components, hooks, services, stores, types. Route files focused on page composition, not large embedded logic.
+- **TypeScript first**: Strict TypeScript. Avoid `any` unless strongly justified. Prefer explicit interfaces, typed API responses, props, hooks, store state.
+- **Component design**: Small, composable, reusable. Separate layout, feature, and UI primitives. Do not mix data fetching, business logic, and heavy UI in one giant component unless justified.
+- **State**: Local state for modals, temporary input, dropdowns. TanStack Query for server data, caching, refetch, mutations. Zustand only for true cross-app client state (e.g. selected workspace, chat panel state). Do not put server data in Zustand when TanStack Query should manage it.
+- **UI consistency**: Tailwind, shadcn/ui, shared spacing/typography/color tokens. No random styles per page.
+- **Accessibility**: Keyboard-friendly, visible focus, semantic buttons/inputs, proper labels, accessible dialogs, manageable keyboard navigation in chat.
+- **Error handling**: Handle loading, empty, API errors, permission errors, retry. No silent failures.
+
+---
+
+## 8. Realtime Rules
+
+- **Truth from backend**: Realtime UI must reflect backend truth; no permanent frontend-only assumptions for message state.
+- **Optimistic updates**: Allowed only when rollback on failure is possible and final backend state wins; user feedback can feel instant.
+- **Presence and typing**: Lightweight; do not over-engineer early or fake permanently.
+- **Conversation isolation**: Events only reach authorized users for that workspace/conversation; privacy always respected.
+
+---
+
+## 9. Testing Rules
+
+- **Philosophy**: Build with testing in mind; goal is confidence in important flows, not meaningless 100% coverage.
+- **Backend**: Cover auth, workspace creation, invitations, roles/permissions, conversation creation, send/edit/delete messages, read flows, attachment upload, validation failures. Use feature tests for API flows, unit tests for isolated logic.
+- **Frontend**: Focus on important user behavior (forms, message composer, sidebar, conversation switching, error states). No fragile tests for purely visual markup without value.
+- **Realtime**: Test important flows at backend event level and in integration where practical.
+
+---
+
+## 10. Security Rules
+
+Security from day one: protect auth, authorization, private conversations, workspace boundaries, file upload validation, rate-limited sensitive endpoints. Validate all input, authorize every protected action, sanitize uploads, never expose private data across workspaces, never trust client-side checks alone.
+
+---
+
+## 11. Performance Rules
+
+Paginate or cursor-load messages; avoid loading too much at once; lazy load where reasonable; cache carefully; queue heavy work; avoid unnecessary rerenders. Build MVP simply but not carelessly.
+
+---
+
+## 12. File Upload Rules
+
+All uploads: validated, size-limited, type-restricted where needed, stored via proper abstraction, associated only with authorized conversations. Never trust client file metadata alone.
+
+---
+
+## 13. Git and Commit Rules
+
+- **Branches**: Clean names, e.g. `feature/auth-api`, `feature/workspace-invite-flow`, `fix/message-read-bug`.
+- **Commits**: Clear messages, e.g. `feat: add workspace creation flow`, `fix: prevent unauthorized conversation access`, `refactor: extract message send action`. Avoid vague commits like `update stuff`, `fix code`, `changes`.
+
+---
+
+## 14. Documentation Rules
+
+Document setup, environment, architecture overview, major modules, API usage, realtime approach, known conventions. For complex modules, leave clear implementation notes.
+
+---
+
+## 15. UI/UX Rules
+
+Modern startup product: clean, minimal, fast, professional, communication-focused. Prioritize message readability, fast navigation, low clutter, strong spacing, consistent states, polished interactions. Function and clarity first; no unnecessary decoration.
+
+---
+
+## 16. MVP Discipline
+
+- Build complete flows, not broken half-features.
+- Fewer polished features over many weak ones.
+- Do not skip core architecture for speed or overbuild edge features before core chat is solid.
+
+**Priority order**: (1) authentication, (2) workspace flow, (3) conversations, (4) messaging, (5) realtime delivery, (6) read/unread and presence, (7) attachments, (8) search and collaboration polish.
+
+---
+
+## 17. Future Compatibility (Flutter)
+
+Backend responses reusable; auth API-friendly; realtime events client-agnostic; business rules never web-only; UI shortcuts must not define backend behavior.
+
+---
+
+## 18. Definition of Done
+
+A feature is done when: it works end-to-end; validation and authorization are in place; errors are handled; code is clean; tests added where needed; UI states complete; no major console/lint issues or obvious dead code.
+
+---
+
+## 19. Non-Negotiables
+
+- No giant controller logic
+- No giant React page components full of mixed logic
+- No skipping validation or authorization
+- No random UI inconsistency
+- No `any` everywhere
+- No hardcoded secrets or URLs
+- No fake architecture that blocks Flutter later
+- No “we will fix it later” shortcuts for core structure
+
+---
+
+## 20. Final Standard
+
+Chatvioso must look and feel like a real SaaS product, a serious portfolio project, a reusable multi-client platform, and a codebase another developer can maintain. Every implementation should move the project closer to that standard.

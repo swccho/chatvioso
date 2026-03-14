@@ -1,0 +1,1006 @@
+---
+description: Chatvioso UI architecture and refactor structure — folder layout, features, design direction, layout, refactor order. Reference when rebuilding frontend UI.
+globs: frontend/**/*.tsx, frontend/**/*.css
+alwaysApply: false
+---
+
+# Chatvioso UI Architecture
+
+## Purpose
+
+This document defines the frontend UI architecture for refactoring **Chatvioso** from scratch.
+
+This is a **UI-only refactor architecture**, meaning:
+
+- backend logic should remain intact
+- API contracts should remain intact unless integration requires adjustment
+- focus is on frontend structure, UI scalability, UX quality, and maintainability
+
+The goal is to rebuild the Chatvioso interface into a modern, production-grade chat product with a clean and reusable architecture.
+
+---
+
+# 1. High-Level Refactor Goals
+
+## Primary goals
+
+- rebuild the UI from scratch with a consistent design system
+- make the codebase scalable and easy to maintain
+- separate layout, feature, and shared UI responsibilities
+- eliminate duplicated and messy frontend patterns
+- improve chat usability across desktop, tablet, and mobile
+- create reusable foundations for future features
+
+## Non-goals
+
+This refactor should **not**:
+
+- rewrite backend business logic
+- redesign API behavior without reason
+- introduce unnecessary UI complexity
+- over-engineer tiny components
+- mix old and new design patterns together
+
+---
+
+# 2. Design Direction
+
+## Product feel
+
+Chatvioso should feel like a real SaaS chat product.
+
+Design direction:
+
+- premium
+- minimal
+- modern
+- fast
+- clean
+- focused on communication
+- not dashboard-heavy unless needed
+- comfortable for long-term usage
+
+## Style inspiration
+
+Use a blend of:
+
+- Linear cleanliness
+- Slack/Discord chat usability
+- WhatsApp simplicity for direct messaging flow
+- modern SaaS panels and settings UX
+
+---
+
+# 3. Main Application Areas
+
+The UI should be organized into these major areas:
+
+## 3.1 Auth Area
+
+Includes:
+
+- login page
+- register page
+- forgot password page
+- reset password page
+- verify account / onboarding screens if needed
+
+## 3.2 Main Chat App Shell
+
+Includes:
+
+- left navigation/sidebar
+- conversation list
+- active chat panel
+- optional right-side detail panel
+- top header
+- mobile navigation behavior
+
+## 3.3 Chat Experience
+
+Includes:
+
+- conversation header
+- message list
+- grouped message bubbles
+- attachments/media blocks
+- typing state
+- composer
+- reply/edit reactions if supported later
+
+## 3.4 Contacts / People
+
+Includes:
+
+- contacts list
+- user cards
+- search results
+- start new conversation flow
+
+## 3.5 Group / Channel UI
+
+Includes:
+
+- group header
+- member list
+- group details panel
+- shared files/media panel
+- group settings UI
+
+## 3.6 Settings Area
+
+Includes:
+
+- profile settings
+- account settings
+- notification preferences
+- theme settings
+- privacy/settings panels
+
+## 3.7 Shared System UI
+
+Includes:
+
+- dialogs
+- drawers
+- dropdowns
+- toasts
+- empty states
+- loaders
+- skeletons
+- confirmation modals
+- reusable form controls
+
+---
+
+# 4. Recommended Folder Structure
+
+Use a feature-driven architecture with a reusable UI layer.
+
+```txt
+src/
+  app/
+    layouts/
+      AuthLayout
+      ChatLayout
+      SettingsLayout
+    providers/
+      ThemeProvider
+      QueryProvider
+      AuthProvider
+    router/
+      routes
+      guards
+    store/
+      ui
+      session
+
+  components/
+    ui/
+      button/
+      input/
+      textarea/
+      avatar/
+      badge/
+      dialog/
+      drawer/
+      dropdown/
+      tabs/
+      tooltip/
+      switch/
+      checkbox/
+      radio/
+      skeleton/
+      spinner/
+      separator/
+      scroll-area/
+    shared/
+      app-logo/
+      app-shell/
+      page-header/
+      empty-state/
+      error-state/
+      search-input/
+      user-presence/
+      unread-badge/
+      status-pill/
+      back-button/
+      section-header/
+
+  features/
+    auth/
+      components/
+      pages/
+      hooks/
+      services/
+      types/
+      utils/
+
+    chat-layout/
+      components/
+        app-sidebar/
+        workspace-switcher/
+        mobile-nav/
+        topbar/
+      hooks/
+      types/
+
+    conversations/
+      components/
+        conversation-list/
+        conversation-list-item/
+        conversation-filters/
+        conversation-search/
+      hooks/
+      services/
+      types/
+      utils/
+
+    messages/
+      components/
+        conversation-header/
+        message-list/
+        message-group/
+        message-bubble/
+        message-status/
+        message-time/
+        attachment-preview/
+        typing-indicator/
+        date-separator/
+        composer/
+        composer-toolbar/
+      hooks/
+      services/
+      types/
+      utils/
+
+    contacts/
+      components/
+      pages/
+      hooks/
+      services/
+      types/
+
+    groups/
+      components/
+      pages/
+      hooks/
+      services/
+      types/
+
+    profile/
+      components/
+      pages/
+      hooks/
+      services/
+      types/
+
+    settings/
+      components/
+      pages/
+      hooks/
+      services/
+      types/
+
+    search/
+      components/
+      hooks/
+      services/
+      types/
+
+    notifications/
+      components/
+      hooks/
+      services/
+      types/
+
+  lib/
+    api/
+    constants/
+    utils/
+    helpers/
+    formatters/
+    validators/
+
+  styles/
+    globals.css
+    tokens.css
+    utilities.css
+
+  types/
+    common.ts
+    api.ts
+```
+
+---
+
+# 5. Responsibility Rules by Layer
+
+## 5.1 `app/`
+
+Responsible for:
+
+* app bootstrapping
+* route setup
+* providers
+* app-level layouts
+* global UI/state setup
+
+Do not place feature-specific UI logic here unless it truly belongs to app-wide behavior.
+
+## 5.2 `components/ui/`
+
+Responsible for the basic design system building blocks.
+
+Examples:
+
+* Button
+* Input
+* Textarea
+* Avatar
+* Badge
+* Dialog
+* Drawer
+* Tabs
+* Tooltip
+* Spinner
+* Skeleton
+
+Rules:
+
+* generic
+* reusable
+* no feature knowledge
+* variant-based where possible
+
+## 5.3 `components/shared/`
+
+Responsible for composed reusable blocks used across multiple features.
+
+Examples:
+
+* EmptyState
+* SearchInput
+* AppLogo
+* PageHeader
+* ErrorState
+* UserPresenceBadge
+
+Rules:
+
+* may combine `components/ui`
+* still should not depend on one specific feature too deeply
+
+## 5.4 `features/*`
+
+Responsible for feature-specific UI and logic.
+
+Each feature should contain:
+
+* components
+* pages if needed
+* hooks
+* services
+* types
+* utilities
+
+Feature folders must stay self-contained as much as possible.
+
+## 5.5 `lib/`
+
+Responsible for:
+
+* API clients
+* utility helpers
+* constants
+* shared formatters
+* validators
+* non-visual utilities
+
+Do not mix feature UI code into `lib`.
+
+---
+
+# 6. Layout Architecture
+
+## 6.1 Auth Layout
+
+Use a dedicated auth layout.
+
+### Responsibilities
+
+* branding area
+* auth form container
+* optional illustration or side panel
+* responsive mobile-first alignment
+
+### Rules
+
+* clean
+* centered
+* minimal distractions
+* strong focus on form completion
+* should feel branded and modern, not generic template-like
+
+---
+
+## 6.2 Main Chat Layout
+
+This is the core application layout.
+
+### Desktop structure
+
+```txt
+| Global Sidebar | Conversation List | Active Chat Panel | Optional Detail Panel |
+```
+
+### Behavior
+
+#### Global Sidebar
+
+Contains:
+
+* app logo
+* primary navigation
+* user/profile access
+* settings shortcut
+* collapse behavior if needed
+
+#### Conversation List
+
+Contains:
+
+* search
+* filter tabs if needed
+* recent chats
+* unread indicators
+* active conversation state
+
+#### Active Chat Panel
+
+Contains:
+
+* conversation header
+* messages scroll area
+* composer
+* loading/empty state
+
+#### Detail Panel
+
+Contains:
+
+* chat info
+* members
+* media/files
+* pinned items
+* actions/settings
+
+---
+
+## 6.3 Mobile Chat Layout
+
+On mobile, the UI must simplify.
+
+### Mobile behavior
+
+* show one major panel at a time
+* chat list and active conversation should transition cleanly
+* detail panel should open as drawer/sheet
+* composer must remain anchored and usable
+* navigation should never block chat actions
+
+### Priority on mobile
+
+1. read message thread
+2. send message quickly
+3. move between chats easily
+4. open details only when needed
+
+---
+
+# 7. Feature Architecture Details
+
+# 7.1 Auth Feature
+
+## Pages
+
+* LoginPage
+* RegisterPage
+* ForgotPasswordPage
+* ResetPasswordPage
+
+## Components
+
+* AuthCard
+* AuthFormHeader
+* LoginForm
+* RegisterForm
+* PasswordField
+* AuthSidePanel
+* SocialAuthButtons if needed
+
+## Rules
+
+* use shared form controls
+* keep forms simple
+* clear validation messaging
+* loading state on submit
+* accessible labels and focus states
+
+---
+
+# 7.2 Conversation Feature
+
+## Pages / panels
+
+* ConversationListPanel
+* NewConversationModal or Drawer
+* Archived/Filtered views if needed
+
+## Components
+
+* ConversationSearch
+* ConversationFilters
+* ConversationList
+* ConversationListItem
+* PinnedConversationSection
+* ConversationEmptyState
+
+## Conversation list item content
+
+Each item should support:
+
+* avatar
+* display name
+* last message preview
+* unread badge
+* time label
+* active state
+* muted/pinned indicators if applicable
+
+## UX rules
+
+* list should be quickly scannable
+* active state should be obvious
+* unread should be visually clear
+* hover should be subtle
+* long names and previews should truncate gracefully
+
+---
+
+# 7.3 Messages Feature
+
+This is the heart of the app.
+
+## Main components
+
+* ConversationHeader
+* MessageList
+* MessageGroup
+* MessageBubble
+* MessageMeta
+* MessageStatus
+* MessageAttachmentPreview
+* DateSeparator
+* TypingIndicator
+* MessageComposer
+* ComposerToolbar
+* ComposerInput
+* SendButton
+
+## Message list behavior
+
+The message list must support:
+
+* grouped messages by sender/time proximity
+* date separators
+* scrollable content area
+* loading older messages if needed
+* empty state
+* typing indicator
+* stable composer positioning
+
+## Message bubble rules
+
+Messages should clearly distinguish:
+
+* own message
+* other user message
+* group sender context if needed
+* time/status
+* attachments
+
+## Composer rules
+
+The composer must support:
+
+* text input
+* multiline growth
+* send action
+* attachment trigger
+* disabled/loading states
+* keyboard-friendly usage
+
+---
+
+# 7.4 Contact Feature
+
+## Pages / views
+
+* ContactsPage
+* AddContactModal
+* ContactProfileDrawer
+
+## Components
+
+* ContactList
+* ContactCard
+* ContactSearch
+* ContactFilterBar
+* ContactEmptyState
+
+## Rules
+
+* fast search and scan
+* clean user cards
+* avatar and presence should feel consistent with chat list
+* should support "start chat" action clearly
+
+---
+
+# 7.5 Group Feature
+
+## Pages / views
+
+* GroupListPage
+* GroupDetailsPanel
+* CreateGroupModal
+* ManageMembersDrawer
+
+## Components
+
+* GroupCard
+* MemberList
+* MemberRow
+* GroupHeader
+* GroupMediaPanel
+* GroupSettingsForm
+
+## Rules
+
+* member management actions must be clear
+* shared media/files should feel structured
+* group info should not clutter the active chat area
+
+---
+
+# 7.6 Settings Feature
+
+## Pages
+
+* ProfileSettingsPage
+* AccountSettingsPage
+* NotificationSettingsPage
+* AppearanceSettingsPage
+* PrivacySettingsPage
+
+## Components
+
+* SettingsSidebar
+* SettingsSection
+* SettingsCard
+* ProfileAvatarEditor
+* PreferenceToggleRow
+* DangerZonePanel
+
+## Rules
+
+* settings should feel calm and organized
+* use sections, not long chaotic forms
+* destructive actions must be clearly separated
+
+---
+
+# 8. Shared UI System
+
+These components should be reusable across the project.
+
+## Required UI primitives
+
+* Button
+* IconButton
+* Input
+* SearchInput
+* Textarea
+* Select
+* Checkbox
+* Switch
+* RadioGroup
+* Avatar
+* Badge
+* Tooltip
+* Modal/Dialog
+* Drawer/Sheet
+* DropdownMenu
+* Tabs
+* Separator
+* ScrollArea
+* Skeleton
+* Spinner
+* Toast
+* EmptyState
+* ErrorState
+
+## Rules for shared UI
+
+* variants should be prop-based
+* support disabled/loading states where needed
+* keep API simple
+* no feature-specific naming in base components
+
+---
+
+# 9. State Management Guidelines
+
+For the UI refactor, state should be separated by responsibility.
+
+## App/global state
+
+Examples:
+
+* theme
+* current user session
+* sidebar open/collapse state
+* mobile panel visibility
+* selected conversation id if globally needed
+
+## Feature state
+
+Examples:
+
+* conversation filters
+* search query
+* selected attachment preview
+* active settings tab
+* modal open states
+
+## Rules
+
+* local state first when possible
+* shared state only when actually shared
+* avoid turning every small UI interaction into global store state
+* keep transient UI state close to the component/feature
+
+---
+
+# 10. Styling Architecture
+
+## Recommended setup
+
+Use a consistent utility-first system with design tokens.
+
+## Required styling foundations
+
+### Colors
+
+Create semantic color usage:
+
+* bg-app
+* bg-surface
+* bg-surface-muted
+* border-default
+* text-primary
+* text-secondary
+* text-muted
+* primary
+* primary-hover
+* success
+* warning
+* danger
+
+### Typography
+
+Define consistent text roles:
+
+* display
+* heading
+* title
+* body
+* body-sm
+* meta
+* caption
+
+### Radius
+
+Define small set:
+
+* sm
+* md
+* lg
+* xl
+* full
+
+### Elevation
+
+Define limited shadows:
+
+* none
+* card
+* overlay
+
+### Spacing
+
+Use consistent spacing scale only.
+
+---
+
+# 11. Responsive Strategy
+
+## Desktop
+
+* full multi-panel experience
+* sidebar + conversations + chat + optional details
+
+## Tablet
+
+* collapse global sidebar if needed
+* conversation list stays accessible
+* detail panel becomes overlay or drawer
+
+## Mobile
+
+* one panel at a time
+* use bottom sheet / drawer patterns where appropriate
+* preserve composer visibility
+* avoid tiny hit areas
+* avoid cluttered topbars
+
+---
+
+# 12. Refactor Order
+
+Refactor in a stable sequence.
+
+## Phase 1 — Foundation
+
+Build first:
+
+1. design tokens
+2. typography rules
+3. color system
+4. spacing system
+5. base UI components
+6. app layouts
+7. responsive shell
+8. icon strategy
+9. skeleton/loading system
+
+## Phase 2 — App Shell
+
+Build next:
+
+1. main sidebar
+2. top navigation/header
+3. conversation list shell
+4. active panel shell
+5. detail drawer/panel shell
+6. mobile navigation behavior
+
+## Phase 3 — Chat Experience
+
+Then build:
+
+1. conversation list item
+2. conversation search/filter
+3. conversation header
+4. message list
+5. message grouping
+6. message bubble variants
+7. date separators
+8. typing indicator
+9. message composer
+10. attachment preview UI
+11. empty/loading/error states
+
+## Phase 4 — Secondary Screens
+
+Then:
+
+1. contacts page
+2. group UI
+3. profile panels
+4. settings pages
+5. account/preferences screens
+
+## Phase 5 — Polish
+
+Finally:
+
+1. transitions
+2. micro interactions
+3. accessibility improvements
+4. keyboard UX
+5. responsive QA
+6. consistency cleanup
+7. dead code removal
+8. visual alignment pass
+
+---
+
+# 13. Naming Conventions
+
+## Components
+
+Use PascalCase and descriptive names:
+
+* `ConversationListItem`
+* `MessageComposer`
+* `ProfileSettingsForm`
+
+## Hooks / composables
+
+Use clear prefixes:
+
+* `useConversationSearch`
+* `useMessageComposer`
+* `useMobileChatLayout`
+
+## Files
+
+Keep names aligned with component names.
+
+Avoid vague names like:
+
+* `Item`
+* `Box`
+* `SectionNew`
+* `Temp`
+* `FinalFinal`
+
+---
+
+# 14. Definition of Done
+
+A refactored UI area is complete only if:
+
+* structure matches the new architecture
+* code is reusable and readable
+* design is visually consistent
+* responsive behavior works
+* empty/loading/error states exist
+* accessibility baseline is covered
+* no obvious duplication remains
+* no old design language leaks into the new screen
+* implementation feels production-ready
+
+---
+
+# 15. Anti-Patterns to Avoid
+
+Do not:
+
+* mix shared and feature-specific code randomly
+* create giant page components full of inline markup
+* hardcode styling inconsistently
+* rebuild each form/input/button differently
+* create multiple versions of the same chat item UI
+* rely on color alone for important states
+* leave mobile behavior as an afterthought
+* keep old CSS structures if rebuilding from scratch is cleaner
+* over-animate the interface
+* make the product look like a generic admin dashboard
+
+---
+
+# 16. Final Build Philosophy
+
+Every UI decision in Chatvioso should aim for this:
+
+* easier to understand
+* easier to extend
+* easier to maintain
+* easier to use
+* visually calmer
+* more product-like
+* more consistent
+* more scalable for future chat features
