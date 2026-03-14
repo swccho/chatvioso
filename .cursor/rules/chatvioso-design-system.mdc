@@ -1,0 +1,760 @@
+# Chatvioso Design System
+
+## Purpose
+
+This document defines the visual design system for the **Chatvioso UI refactor**.
+
+It should be used as the single source of truth for:
+
+- colors
+- typography
+- spacing
+- radius
+- shadows
+- borders
+- layout sizing
+- component sizing
+- interaction states
+
+The goal is to make the Chatvioso UI feel:
+
+- modern
+- premium
+- calm
+- highly usable
+- visually consistent
+- scalable for future screens
+
+---
+
+# 1. Design Direction
+
+## Product style
+
+Chatvioso should look like a modern SaaS messaging product.
+
+It should feel like a blend of:
+
+- Linear-style cleanliness
+- Slack/Discord usability
+- WhatsApp-like message clarity
+- modern product-grade minimalism
+
+## Visual principles
+
+The UI must be:
+
+- minimal, not empty
+- premium, not flashy
+- soft, not dull
+- structured, not rigid
+- expressive through spacing and hierarchy, not decoration
+- readable for long sessions
+- calm enough for heavy daily use
+
+---
+
+# 2. Color System
+
+Use semantic colors, not arbitrary one-off colors.
+
+## 2.1 Core color roles
+
+### Backgrounds
+- `bg-app`
+- `bg-surface`
+- `bg-surface-muted`
+- `bg-surface-elevated`
+- `bg-sidebar`
+- `bg-chat`
+- `bg-composer`
+
+### Text
+- `text-primary`
+- `text-secondary`
+- `text-muted`
+- `text-inverse`
+- `text-brand`
+
+### Borders
+- `border-default`
+- `border-muted`
+- `border-strong`
+
+### Brand
+- `brand-primary`
+- `brand-primary-hover`
+- `brand-primary-soft`
+
+### State colors
+- `success`
+- `warning`
+- `danger`
+- `info`
+
+### Message colors
+- `message-own-bg`
+- `message-other-bg`
+- `message-own-text`
+- `message-other-text`
+
+---
+
+## 2.2 Recommended palette direction
+
+You can adapt exact shades, but the product should follow this mood:
+
+### Neutral base
+Use cool-neutral or slightly slate-based neutrals.
+
+Examples of tone direction:
+- soft white / near-white backgrounds
+- light gray surfaces
+- subtle borders
+- strong dark text
+- muted supporting text
+
+### Brand accent
+Use one main brand color only.
+
+Recommended brand direction:
+- deep blue
+- indigo
+- violet-blue
+- restrained teal-blue
+
+Avoid:
+- neon tones
+- too many accent colors
+- extremely saturated UI
+
+---
+
+## 2.3 Suggested semantic color mapping
+
+### Light mode
+- `bg-app`: very light neutral
+- `bg-surface`: white
+- `bg-surface-muted`: soft gray
+- `bg-surface-elevated`: white
+- `bg-sidebar`: slightly tinted neutral
+- `bg-chat`: very light neutral
+- `bg-composer`: white
+
+- `text-primary`: dark neutral
+- `text-secondary`: medium neutral
+- `text-muted`: muted neutral
+- `text-inverse`: white
+
+- `border-default`: light neutral border
+- `border-muted`: very soft border
+- `border-strong`: stronger neutral border
+
+- `brand-primary`: calm saturated blue/indigo
+- `brand-primary-hover`: slightly deeper version
+- `brand-primary-soft`: low-opacity tinted background
+
+### Dark mode
+If dark mode exists, keep it elegant:
+
+- deep charcoal backgrounds
+- layered surfaces with subtle separation
+- muted but readable borders
+- strong readable text contrast
+- no overly blue or overly black backgrounds
+- brand accent should remain controlled
+
+---
+
+## 2.4 Color usage rules
+
+### Rules
+- one primary accent only
+- destructive actions always use danger color
+- success/warning must be used sparingly
+- muted text should remain readable
+- borders should be subtle
+- do not use bright colors for basic containers
+- use brand tint for selected/active UI only where it helps
+- unread indicators should be strong but not loud
+
+### Do not
+- use random hex values inline
+- use multiple blues, greens, purples without system meaning
+- use gradients in core chat surfaces
+- use color alone to indicate important state
+
+---
+
+# 3. Typography System
+
+Typography should carry a lot of the visual hierarchy.
+
+## 3.1 Font family
+
+Use one modern UI font family for the whole application.
+
+Recommended direction:
+- clean sans-serif
+- highly readable
+- good at small sizes
+- professional and product-friendly
+
+Examples of style direction:
+- Inter-like
+- Geist-like
+- modern SaaS UI sans
+
+Do not mix many font families.
+
+---
+
+## 3.2 Type scale
+
+Use a restrained and reusable text scale.
+
+### Display
+For hero/auth branding only:
+- `text-display`
+
+### Page title
+For major page headers:
+- `text-page-title`
+
+### Section title
+For panel titles and settings sections:
+- `text-section-title`
+
+### Card / panel title
+For cards, lists, and grouped sections:
+- `text-card-title`
+
+### Body
+Default reading text:
+- `text-body`
+
+### Body small
+For secondary body content:
+- `text-body-sm`
+
+### Meta
+For timestamps, previews, helper content:
+- `text-meta`
+
+### Caption
+For tiny labels only when necessary:
+- `text-caption`
+
+---
+
+## 3.3 Typography weight rules
+
+Use weights intentionally:
+
+- `regular` for most body text
+- `medium` for important labels
+- `semibold` for headings and active emphasis
+- avoid overusing bold
+- avoid using multiple strong weights in the same small component
+
+---
+
+## 3.4 Typography usage examples
+
+### Sidebar nav
+- medium weight
+- small-to-body sizing
+- muted by default, stronger when active
+
+### Conversation name
+- medium or semibold
+- readable at a glance
+
+### Message text
+- body size
+- comfortable line height
+- high contrast
+
+### Meta text
+- small
+- muted
+- still readable
+
+### Form labels
+- medium
+- consistent size
+- strong enough to be clear
+
+---
+
+# 4. Spacing System
+
+Use a fixed spacing scale only.
+
+## 4.1 Spacing scale
+
+Use this system consistently:
+
+- `1` = 4px
+- `2` = 8px
+- `3` = 12px
+- `4` = 16px
+- `5` = 20px
+- `6` = 24px
+- `8` = 32px
+- `10` = 40px
+- `12` = 48px
+- `16` = 64px
+
+---
+
+## 4.2 Spacing rules
+
+### Use spacing intentionally for:
+- panel padding
+- list gaps
+- form field spacing
+- message group separation
+- page section separation
+
+### Preferred rhythm
+- dense UI: 8–16px rhythm
+- panel/card padding: 16–24px
+- major section spacing: 24–32px
+- auth page spacing: 24–40px
+
+### Avoid
+- arbitrary one-off spacing
+- cramped message lists
+- oversized padding in data-dense chat areas
+- inconsistent horizontal alignment
+
+---
+
+# 5. Radius System
+
+Use a small, consistent radius scale.
+
+## 5.1 Radius scale
+
+- `radius-sm` → small controls, badges
+- `radius-md` → inputs, compact surfaces
+- `radius-lg` → cards, list items, dropdowns
+- `radius-xl` → modals, major panels, composer
+- `radius-full` → avatars, pills, circular actions
+
+---
+
+## 5.2 Radius usage rules
+
+### Suggested usage
+- buttons: md or lg
+- inputs: md
+- cards: lg
+- message bubbles: lg or xl depending on style
+- composer: xl
+- modals/drawers: xl
+- avatars: full
+
+### Avoid
+- mixing too many rounding styles
+- extremely sharp + extremely rounded together
+- overly pill-like cards everywhere
+
+---
+
+# 6. Border System
+
+Borders should do most of the separation work.
+
+## 6.1 Border rules
+
+Use subtle borders for:
+- sidebar separators
+- panel dividers
+- cards
+- inputs
+- dropdowns
+- message composer
+- settings sections
+
+## 6.2 Border widths
+
+Keep it simple:
+- default border width should usually be 1px
+- stronger separators only when required
+
+## 6.3 Border style direction
+
+Borders should be:
+- soft
+- low contrast
+- visible enough to structure the UI
+- not heavy and dark in light mode
+
+---
+
+# 7. Shadow System
+
+Shadows should be soft and minimal.
+
+## 7.1 Shadow levels
+
+Define only a few levels:
+
+- `shadow-none`
+- `shadow-soft`
+- `shadow-card`
+- `shadow-overlay`
+
+## 7.2 Usage
+
+### No shadow
+Use for:
+- most flat app surfaces
+- sidebar sections
+- list items
+
+### Soft/card shadow
+Use for:
+- elevated cards where needed
+- auth card
+- floating mini panels
+
+### Overlay shadow
+Use for:
+- modals
+- dropdown menus
+- drawers
+- popovers
+
+## 7.3 Rules
+
+- prefer border + subtle elevation over strong shadows
+- never use dramatic dark shadows
+- chat screens should feel mostly flat and calm
+
+---
+
+# 8. Layout System
+
+## 8.1 App width and height behavior
+
+The application should be designed around full-height app usage.
+
+Rules:
+- app shell fills viewport height
+- sidebar scrolls independently when needed
+- conversation list scrolls independently
+- message list scrolls independently
+- composer remains anchored
+- avoid whole-page scroll for main chat screen
+
+---
+
+## 8.2 Panel width guidance
+
+### Global sidebar
+Should be narrow and stable.
+
+### Conversation list
+Should be wide enough for:
+- avatar
+- full name
+- preview
+- time
+- unread badge
+
+### Active chat panel
+Should get the most visual priority.
+
+### Detail panel
+Should be secondary and collapsible.
+
+---
+
+## 8.3 Content density rules
+
+### Chat area
+- medium density
+- optimized for reading
+- not too much boxed UI
+
+### Settings area
+- lower density
+- more breathing room
+- calm structured sections
+
+### Contacts list
+- medium density
+- searchable/scannable
+
+---
+
+# 9. Component Sizing Rules
+
+## 9.1 Buttons
+
+Define standard heights:
+- small
+- medium
+- large
+
+Rules:
+- consistent icon spacing
+- icon-only buttons must have square sizing
+- destructive and primary must share sizing rules
+- no random button heights
+
+---
+
+## 9.2 Inputs
+
+Inputs should have consistent heights and padding.
+
+Rules:
+- strong but subtle focus state
+- enough internal padding
+- placeholder should be muted, not faint
+- text vertically aligned well
+
+---
+
+## 9.3 Avatars
+
+Use a standard avatar scale.
+
+Example sizes:
+- xs
+- sm
+- md
+- lg
+- xl
+
+Rules:
+- conversation list should use one consistent size
+- message area may use a smaller size for sender context
+- profile/settings may use larger size
+
+---
+
+## 9.4 Icons
+
+Use one icon set only.
+
+Rules:
+- standard small size for inline actions
+- medium for main buttons
+- larger only for empty states or hero/auth blocks
+- do not mix different icon stroke weights/styles
+
+---
+
+# 10. Message Design System
+
+This area is very important.
+
+## 10.1 Message bubble style
+
+Own messages and other messages must differ clearly.
+
+### Own message
+- tinted with brand-aware or slightly emphasized background
+- high readability
+- aligned to the right if product direction supports that
+
+### Other message
+- neutral surface background
+- aligned opposite
+- distinct from own message without heavy contrast
+
+## 10.2 Message spacing
+
+Use consistent rules for:
+- gap between consecutive messages from same sender
+- larger gap between sender groups
+- date separator spacing
+- bubble padding
+
+## 10.3 Message text behavior
+
+Rules:
+- long text wraps cleanly
+- URLs do not destroy layout
+- multiline content remains readable
+- timestamps do not visually fight with message content
+
+---
+
+# 11. States and Interaction Styling
+
+## 11.1 Interactive states required
+
+Every interactive component should have:
+
+- default
+- hover
+- active
+- focus-visible
+- disabled
+- loading if needed
+
+## 11.2 Focus state style
+
+Focus must be visible and premium.
+
+Rules:
+- use ring or border highlight
+- must be clearly visible on keyboard navigation
+- should match brand tone
+- never remove focus without replacement
+
+## 11.3 Active state style
+
+Use active states for:
+- selected chat
+- selected nav item
+- selected tab
+- toggle states
+
+Active state should combine:
+- background shift
+- stronger text/icon
+- optional border/accent indicator
+
+---
+
+# 12. Empty, Loading, and Error Styles
+
+## 12.1 Empty state style
+
+Should include:
+- icon or illustration area
+- title
+- helpful descriptive text
+- optional CTA
+
+Tone:
+- calm
+- helpful
+- not playful unless brand direction supports it
+
+## 12.2 Skeleton style
+
+Skeletons should:
+- match final layout shape
+- use subtle shimmer only
+- avoid excessive animation
+- reduce layout jump
+
+## 12.3 Error state style
+
+Should:
+- clearly explain something failed
+- suggest next action
+- use danger color sparingly
+- preserve layout consistency
+
+---
+
+# 13. Motion Principles
+
+Motion should be subtle and fast.
+
+## 13.1 Allowed motion
+
+- fade
+- soft slide
+- subtle scale-in
+- drawer transition
+- modal transition
+- list hover polish
+- skeleton shimmer
+
+## 13.2 Avoid
+
+- bounce
+- dramatic entrance animations
+- large movement across chat surfaces
+- animation on every message unless truly needed
+
+## 13.3 Timing direction
+
+Use short, responsive timing.
+
+The UI should feel quick, not cinematic.
+
+---
+
+# 14. Accessibility Visual Rules
+
+## 14.1 Contrast
+
+Text contrast must remain strong enough for:
+- message text
+- metadata
+- form labels
+- navigation items
+- buttons
+
+## 14.2 Hit area
+
+Touch targets and icon buttons must be comfortable.
+
+Especially for:
+- mobile composer actions
+- sidebar nav
+- back buttons
+- detail drawer triggers
+
+## 14.3 Non-color indicators
+
+Use more than color for:
+- unread states
+- active chat
+- error fields
+- destructive actions
+- online/offline status where necessary
+
+---
+
+# 15. Design Consistency Rules
+
+Before adding any new UI, confirm:
+
+1. Does it use semantic colors?
+2. Does it follow spacing scale?
+3. Does it use approved radius values?
+4. Does it match typography hierarchy?
+5. Does it use shared component sizing?
+6. Does it match the calm premium Chatvioso style?
+
+If not, adjust it.
+
+---
+
+# 16. Do Not Rules
+
+Do not:
+- invent random new component sizes
+- use arbitrary hex colors inline
+- use oversized shadows
+- overuse gradients
+- overuse glassmorphism
+- mix rounded styles randomly
+- make chat feel like an admin dashboard
+- use weak contrast
+- clutter panels with unnecessary icons
+- create visually noisy unread or active states
+
+---
+
+# 17. Final Design Goal
+
+The final Chatvioso UI should feel like:
+
+- a serious modern SaaS messaging product
+- polished enough for portfolio presentation
+- scalable enough for future features
+- pleasant enough for daily use
+- consistent across every screen

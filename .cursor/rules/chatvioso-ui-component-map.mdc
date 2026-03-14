@@ -1,0 +1,764 @@
+# Chatvioso UI Component Map
+
+## Purpose
+
+This document defines the exact UI components that should exist in the Chatvioso frontend after the refactor.
+
+It serves as:
+
+- component inventory
+- implementation checklist
+- structure map for Cursor
+- guide for reusable UI composition
+
+The goal is to ensure the UI is rebuilt systematically instead of screen by screen with duplicated code.
+
+---
+
+# 1. Component Map Philosophy
+
+The component map should follow these rules:
+
+- shared first
+- feature-specific where needed
+- components should be small and composable
+- avoid giant components
+- avoid duplicate variants of the same UI pattern
+- every major screen should be assembled from reusable blocks
+
+---
+
+# 2. Global UI Primitives
+
+Location:
+
+```
+src/components/ui/
+```
+
+These components are generic and reusable across the whole app.
+
+## Core primitives
+
+- Button
+- IconButton
+- Input
+- SearchInput
+- Textarea
+- Select
+- Checkbox
+- Switch
+- RadioGroup
+- Avatar
+- Badge
+- Tooltip
+- Dialog
+- Drawer
+- DropdownMenu
+- Tabs
+- Separator
+- ScrollArea
+- Spinner
+- Skeleton
+- Toast
+- Progress
+- ContextMenu
+
+## Notes
+
+Rules for these:
+
+- no feature knowledge
+- variant-based APIs
+- accessible by default
+- must support dark/light theme if theme support exists
+- must not contain app-specific wording
+
+---
+
+# 3. Shared App Components
+
+Location:
+
+```
+src/components/shared/
+```
+
+These are reusable composed components used across features.
+
+## Shared foundation components
+
+- AppLogo
+- AppShell
+- PageHeader
+- SectionHeader
+- BackButton
+- EmptyState
+- ErrorState
+- LoadingState
+- ConfirmDialog
+- SearchField
+- UserPresenceIndicator
+- UnreadBadge
+- StatusPill
+- UserAvatarWithStatus
+- ThemeToggle
+- AppUserMenu
+- PanelHeader
+- PanelSection
+- PanelDivider
+- FormField
+- FormErrorText
+- FormHelperText
+
+## Notes
+
+Rules:
+
+- built from `components/ui`
+- reusable across multiple features
+- no deeply feature-specific business logic
+
+---
+
+# 4. App Layout Components
+
+Location:
+
+```
+src/app/layouts/ and src/features/chat-layout/components/
+```
+
+## Layout components
+
+- AuthLayout
+- MainChatLayout
+- SettingsLayout
+- MobileAppDrawer
+- MobileBottomBar if needed
+- AppSidebar
+- AppSidebarHeader
+- AppSidebarNav
+- AppSidebarFooter
+- AppTopbar
+- AppTopbarTitle
+- AppTopbarActions
+- MainContentFrame
+- RightDetailPanelShell
+- ResponsivePanelContainer
+
+## Responsibilities
+
+### AppSidebar
+
+Contains main app navigation.
+
+### AppTopbar
+
+Handles current screen title, contextual actions, mobile toggles.
+
+### MainChatLayout
+
+Defines the 3-column or responsive chat structure.
+
+---
+
+# 5. Auth Feature Components
+
+Location:
+
+```
+src/features/auth/components/
+src/features/auth/pages/
+```
+
+## Auth pages
+
+- LoginPage
+- RegisterPage
+- ForgotPasswordPage
+- ResetPasswordPage
+
+## Auth components
+
+- AuthCard
+- AuthFormHeader
+- AuthSidePanel
+- LoginForm
+- RegisterForm
+- ForgotPasswordForm
+- ResetPasswordForm
+- PasswordField
+- AuthSubmitButton
+- AuthFooterText
+- AuthDivider
+- SocialAuthButtons if needed
+
+## Notes
+
+Rules:
+
+- all forms use shared form controls
+- validation UI must stay consistent
+- auth layout should feel branded and clean
+
+---
+
+# 6. Conversation Feature Components
+
+Location:
+
+```
+src/features/conversations/components/
+src/features/conversations/pages/
+```
+
+## Main conversation panel components
+
+- ConversationPanel
+- ConversationPanelHeader
+- ConversationPanelActions
+- ConversationSearch
+- ConversationFilters
+- ConversationTabs if needed
+- ConversationList
+- ConversationListSection
+- PinnedConversationSection
+- ConversationListItem
+- ConversationListItemAvatar
+- ConversationListItemContent
+- ConversationListItemMeta
+- ConversationListItemUnread
+- ConversationEmptyState
+- ConversationListSkeleton
+- NewConversationButton
+- StartConversationDialog or Drawer
+
+## Conversation list item required content
+
+- avatar
+- name
+- latest message preview
+- timestamp
+- unread count
+- active state
+- muted/pinned indicator if needed
+- online status if supported
+
+## Notes
+
+This area must be highly reusable because the same conversation item pattern may appear in:
+
+- recent chats
+- pinned chats
+- search results
+- new message picker
+
+---
+
+# 7. Active Chat Feature Components
+
+Location:
+
+```
+src/features/messages/components/
+```
+
+This is the most important feature area.
+
+## Main active chat structure
+
+- ActiveConversationView
+- ConversationHeader
+- ConversationHeaderMain
+- ConversationHeaderMeta
+- ConversationHeaderActions
+- ConversationTitle
+- ConversationStatus
+- ConversationActionMenu
+
+## Message list structure
+
+- MessageViewport
+- MessageList
+- MessageListContent
+- MessageGroup
+- MessageGroupAvatar
+- MessageGroupContent
+- MessageBubble
+- MessageBubbleText
+- MessageBubbleMeta
+- MessageBubbleStatus
+- MessageBubbleAttachments
+- MessageBubbleImage
+- MessageBubbleFile
+- MessageBubbleAudio if needed later
+- MessageTimestamp
+- DateSeparator
+- TypingIndicator
+- SystemMessageRow if needed
+- MessageListEmptyState
+- MessageListSkeleton
+- LoadOlderMessagesTrigger if needed
+
+## Composer structure
+
+- MessageComposer
+- ComposerContainer
+- ComposerToolbar
+- ComposerTextarea
+- ComposerActions
+- ComposerAttachmentButton
+- ComposerEmojiButton if needed later
+- ComposerSendButton
+- ComposerReplyPreview if needed later
+- ComposerEditPreview if needed later
+- AttachmentUploadPreview
+- AttachmentPreviewList
+
+## Notes
+
+The active chat feature should be modular enough that:
+
+- header can evolve independently
+- message item rendering can evolve independently
+- composer can evolve independently
+
+---
+
+# 8. Message Bubble Variant Map
+
+Message UI should not be built as one giant component.
+
+## Subcomponents by responsibility
+
+### Content rendering
+
+- MessageBubbleText
+- MessageBubbleAttachments
+- MessageBubbleImage
+- MessageBubbleFile
+
+### Metadata rendering
+
+- MessageTimestamp
+- MessageBubbleStatus
+- MessageSenderName for group chats if needed
+
+### Layout wrappers
+
+- MessageBubble
+- MessageGroup
+- DateSeparator
+
+## Variants message UI must handle
+
+- own text message
+- other text message
+- grouped own message
+- grouped other message
+- image attachment message
+- file attachment message
+- system message
+- pending/sending message if supported
+- failed message if supported
+
+---
+
+# 9. Contacts Feature Components
+
+Location:
+
+```
+src/features/contacts/components/
+src/features/contacts/pages/
+```
+
+## Contacts pages
+
+- ContactsPage
+- ContactProfilePage or Drawer if needed
+
+## Contacts components
+
+- ContactsPageHeader
+- ContactsSearch
+- ContactsFilterBar
+- ContactList
+- ContactListSection
+- ContactCard
+- ContactCardMeta
+- ContactCardActions
+- ContactAvatar
+- ContactPresence
+- ContactQuickActions
+- ContactDetailsPanel
+- ContactDetailsHeader
+- StartChatButton
+- ContactsEmptyState
+- ContactsSkeleton
+
+## Notes
+
+Contact components should visually align with conversation list styling to preserve consistency.
+
+---
+
+# 10. Groups Feature Components
+
+Location:
+
+```
+src/features/groups/components/
+src/features/groups/pages/
+```
+
+## Group pages
+
+- GroupsPage
+- GroupDetailsPage if needed
+
+## Group components
+
+- GroupList
+- GroupCard
+- GroupCardMeta
+- GroupHeader
+- GroupHeaderActions
+- GroupAvatar
+- GroupMembersList
+- GroupMemberRow
+- GroupDetailsPanel
+- GroupAboutSection
+- GroupMediaSection
+- GroupFilesSection
+- GroupSettingsSection
+- CreateGroupDialog
+- AddMembersDialog
+- RemoveMemberDialog if needed
+- GroupEmptyState
+- GroupSkeleton
+
+## Notes
+
+The details panel for groups should share layout structure with one-to-one chat detail panel where possible.
+
+---
+
+# 11. Chat Details Panel Components
+
+Location:
+
+```
+src/features/chat-details/components/
+```
+
+This can be its own feature or live under groups/messages depending on architecture.
+
+## Components
+
+- ChatDetailsPanel
+- ChatDetailsHeader
+- ChatDetailsAvatar
+- ChatDetailsMeta
+- ChatDetailsActions
+- ChatDetailsSection
+- SharedMediaGrid
+- SharedFilesList
+- SharedLinksList if needed
+- MembersPreviewList
+- PinnedMessagesPreview if needed
+- ChatInfoCard
+
+## Notes
+
+This panel must work as:
+
+- fixed right-side panel on desktop
+- drawer/sheet on mobile
+
+---
+
+# 12. Settings Feature Components
+
+Location:
+
+```
+src/features/settings/components/
+src/features/settings/pages/
+```
+
+## Settings pages
+
+- SettingsHomePage
+- ProfileSettingsPage
+- AccountSettingsPage
+- NotificationSettingsPage
+- AppearanceSettingsPage
+- PrivacySettingsPage
+- SecuritySettingsPage if needed
+
+## Settings layout components
+
+- SettingsSidebar
+- SettingsSidebarItem
+- SettingsPageHeader
+- SettingsSection
+- SettingsCard
+- SettingsForm
+- SettingsFormRow
+- SettingsFormActions
+- DangerZoneSection
+
+## Profile-related components
+
+- ProfileAvatarEditor
+- ProfileInfoForm
+- PasswordChangeForm
+- EmailPreferencesForm
+- NotificationToggleRow
+- ThemeSettingsCard
+- SessionList if supported
+- DeleteAccountCard if needed
+
+## Notes
+
+Settings components should feel calmer and roomier than chat components.
+
+---
+
+# 13. Search Feature Components
+
+Location:
+
+```
+src/features/search/components/
+```
+
+## Search components
+
+- GlobalSearchDialog
+- SearchInputHeader
+- SearchResultList
+- SearchResultSection
+- SearchConversationResultItem
+- SearchContactResultItem
+- SearchMessageResultItem
+- SearchEmptyState
+- SearchLoadingState
+
+## Notes
+
+Search result item layouts should reuse existing conversation/contact/message visual patterns where possible.
+
+---
+
+# 14. Notifications Feature Components
+
+Location:
+
+```
+src/features/notifications/components/
+```
+
+## Components
+
+- NotificationsDrawer
+- NotificationsHeader
+- NotificationsList
+- NotificationItem
+- NotificationMeta
+- NotificationsEmptyState
+
+## Notes
+
+Only build if needed in current product scope.
+
+---
+
+# 15. Utility State Components
+
+These should be reused across features.
+
+## State components
+
+- FullPageLoader
+- PanelLoader
+- InlineLoader
+- RetryBlock
+- NoDataState
+- NoResultsState
+- OfflineState if relevant
+- AccessDeniedState if needed
+
+## Skeleton variants
+
+- SidebarSkeleton
+- ConversationListSkeleton
+- MessageListSkeleton
+- ContactListSkeleton
+- SettingsSkeleton
+- DetailsPanelSkeleton
+
+---
+
+# 16. Modal and Drawer Inventory
+
+To keep overlays consistent, define these explicitly.
+
+## Dialogs
+
+- StartConversationDialog
+- CreateGroupDialog
+- ConfirmDeleteDialog
+- LogoutConfirmDialog if needed
+- ChangePasswordDialog if needed
+- FilePreviewDialog if needed
+
+## Drawers / sheets
+
+- MobileNavigationDrawer
+- ChatDetailsDrawer
+- ContactDetailsDrawer
+- NotificationDrawer
+- GroupMembersDrawer if needed
+
+## Rules
+
+All overlays must use the same base dialog/drawer primitives and behavior patterns.
+
+---
+
+# 17. File/Folder Build Checklist
+
+Recommended folder pattern for major components:
+
+```
+FeatureName/
+  ComponentName.tsx
+  index.ts
+  types.ts
+  constants.ts
+  utils.ts
+```
+
+Example:
+
+```
+features/messages/components/MessageBubble/
+  MessageBubble.tsx
+  index.ts
+  types.ts
+```
+
+For smaller components, a single file is enough.
+
+---
+
+# 18. Component Dependency Rules
+
+## Allowed pattern
+
+- `features/*` can use `components/ui`
+- `features/*` can use `components/shared`
+- feature components can use their own feature-local components
+- shared components can use ui primitives
+
+## Avoid
+
+- feature A deeply depending on feature B UI internals
+- circular component dependency
+- app layout importing low-level feature-specific message rendering without proper boundaries
+
+---
+
+# 19. Priority Build Order by Component
+
+Build in this order:
+
+## Foundation
+
+1. Button
+2. Input
+3. Textarea
+4. Avatar
+5. Badge
+6. Dialog
+7. Drawer
+8. Tabs
+9. Skeleton
+10. EmptyState
+
+## Shared
+
+11. AppLogo
+12. PageHeader
+13. UserPresenceIndicator
+14. UnreadBadge
+15. PanelHeader
+
+## Layout
+
+16. AppSidebar
+17. AppTopbar
+18. MainChatLayout
+19. ResponsivePanelContainer
+
+## Conversations
+
+20. ConversationSearch
+21. ConversationListItem
+22. ConversationList
+23. ConversationPanel
+
+## Active chat
+
+24. ConversationHeader
+25. MessageBubble
+26. MessageGroup
+27. MessageList
+28. DateSeparator
+29. TypingIndicator
+30. MessageComposer
+
+## Secondary features
+
+31. ContactCard
+32. ContactsPage
+33. ChatDetailsPanel
+34. GroupCard
+35. SettingsSidebar
+36. SettingsSection
+
+## Utility/polish
+
+37. search dialog
+38. notifications drawer
+39. specialized empty/loading states
+40. overlay refinement
+
+---
+
+# 20. Definition of Done for the Component Map
+
+The component map is correctly implemented when:
+
+- all major screens are composed from mapped components
+- shared patterns are reused across features
+- component naming is consistent
+- there is no obvious duplicate component family
+- each component has a clear responsibility
+- the component tree is scalable for future chat features
+
+---
+
+# 21. Final Goal
+
+After the refactor, Chatvioso should have a component system where:
+
+- chat UI is modular
+- layout is reusable
+- overlays are consistent
+- settings are structured
+- new features can be added without UI chaos
+- the whole app feels like one cohesive product

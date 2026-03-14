@@ -1,0 +1,688 @@
+# Chatvioso Component Standards
+
+## Purpose
+
+This document defines how **UI components must be designed and implemented** in Chatvioso.
+
+It ensures:
+
+- consistency
+- reusability
+- maintainability
+- predictable UI behavior
+- scalable architecture
+
+All UI components must follow these rules.
+
+---
+
+# 1. Component Philosophy
+
+Every component must follow these principles:
+
+1. **Single Responsibility**
+2. **Reusable**
+3. **Composable**
+4. **Predictable API**
+5. **Consistent styling**
+6. **Accessible by default**
+
+Components must be built so they can be reused across multiple screens.
+
+---
+
+# 2. Component Categories
+
+Components are divided into **three layers**.
+
+## Layer 1 — UI Primitives
+
+Location:
+
+```
+components/ui/
+```
+
+Examples:
+
+- Button
+- Input
+- Textarea
+- Avatar
+- Badge
+- Tabs
+- Dialog
+- Drawer
+- Tooltip
+- Dropdown
+- Switch
+- Checkbox
+- Radio
+- Skeleton
+- Spinner
+- Separator
+
+Rules:
+
+- purely visual
+- reusable across all features
+- no feature logic
+- variant-based styling
+
+---
+
+## Layer 2 — Shared Components
+
+Location:
+
+```
+components/shared/
+```
+
+Examples:
+
+- AppLogo
+- PageHeader
+- SectionHeader
+- EmptyState
+- ErrorState
+- UserPresenceIndicator
+- UnreadBadge
+- StatusPill
+- BackButton
+- SearchInput
+
+Rules:
+
+- built using UI primitives
+- reusable across multiple features
+- minimal business logic
+
+---
+
+## Layer 3 — Feature Components
+
+Location:
+
+```
+features/*/components
+```
+
+Examples:
+
+```
+features/messages/components/MessageBubble
+features/conversations/components/ConversationListItem
+features/contacts/components/ContactCard
+```
+
+Rules:
+
+- feature-specific
+- may contain feature logic
+- should still be composable
+
+---
+
+# 3. Component Naming Rules
+
+## Component names
+
+Use **PascalCase**.
+
+Good examples:
+
+```
+MessageBubble
+ConversationListItem
+ChatSidebar
+ContactCard
+ProfileAvatarEditor
+```
+
+Bad examples:
+
+```
+box
+tempComponent
+NewSection
+ItemCard2
+```
+
+---
+
+## File naming
+
+Files must match component names.
+
+Example:
+
+```
+MessageBubble.tsx
+ConversationListItem.tsx
+ChatSidebar.tsx
+```
+
+---
+
+# 4. Component File Structure
+
+Each component should follow a clean structure.
+
+Example:
+
+```
+MessageBubble/
+MessageBubble.tsx
+MessageBubble.types.ts
+MessageBubble.styles.ts (optional)
+index.ts
+```
+
+Or a simpler version:
+
+```
+MessageBubble.tsx
+```
+
+depending on complexity.
+
+---
+
+# 5. Component API Design
+
+Component props must be **clear and predictable**.
+
+## Good API design
+
+Example:
+
+```
+<Button
+  variant="primary"
+  size="md"
+  loading
+>
+  Send
+</Button>
+```
+
+Avoid APIs like:
+
+```
+<Button blue big rounded>
+```
+
+Use explicit props.
+
+---
+
+# 6. Button Standards
+
+Buttons must use the shared **Button component**.
+
+Variants:
+
+- primary
+- secondary
+- outline
+- ghost
+- destructive
+- link
+
+Sizes:
+
+- sm
+- md
+- lg
+
+Example:
+
+```
+<Button variant="primary" size="md">
+  Send Message
+</Button>
+```
+
+---
+
+## Button rules
+
+Buttons must support:
+
+- disabled state
+- loading state
+- icon support
+- icon-only version
+- keyboard focus state
+
+---
+
+# 7. Input Standards
+
+All form inputs must use shared components.
+
+Examples:
+
+```
+<Input />
+<Textarea />
+<Select />
+<Checkbox />
+<Switch />
+```
+
+---
+
+## Input rules
+
+Inputs must support:
+
+- label
+- placeholder
+- validation
+- error state
+- disabled state
+- helper text
+
+Example:
+
+```
+<Input
+  label="Email"
+  placeholder="name@example.com"
+  error="Invalid email"
+/>
+```
+
+---
+
+# 8. Avatar Component
+
+Avatar component should support:
+
+```
+<Avatar
+  src="..."
+  name="Ali Haider"
+  size="md"
+/>
+```
+
+Features:
+
+- fallback initials
+- image loading
+- size variants
+- status indicator (optional)
+
+Sizes:
+
+- xs
+- sm
+- md
+- lg
+- xl
+
+---
+
+# 9. Badge Component
+
+Badges are used for:
+
+- unread count
+- status
+- labels
+- tags
+
+Example:
+
+```
+<Badge variant="primary">
+  3
+</Badge>
+```
+
+Variants:
+
+- default
+- primary
+- success
+- warning
+- danger
+
+---
+
+# 10. Sidebar Navigation Item
+
+Sidebar items must be consistent.
+
+Structure:
+
+```
+SidebarItem
+  icon
+  label
+  active state
+  optional badge
+```
+
+Example:
+
+```
+<SidebarItem
+  icon={ChatIcon}
+  label="Chats"
+  active
+/>
+```
+
+---
+
+# 11. Conversation List Item
+
+Conversation items must display:
+
+- avatar
+- name
+- message preview
+- timestamp
+- unread badge
+- active state
+
+Example layout:
+
+```
+[Avatar]  John Doe
+          Last message preview
+          12:45 PM      [2]
+```
+
+Rules:
+
+- truncate long previews
+- clear unread state
+- active conversation highlighted
+
+---
+
+# 12. Message Bubble Component
+
+Message bubbles must clearly distinguish:
+
+- own message
+- other message
+
+Example API:
+
+```
+<MessageBubble
+  text="Hello"
+  time="12:32"
+  isOwn
+/>
+```
+
+---
+
+## Message bubble rules
+
+Must support:
+
+- grouped messages
+- attachments
+- timestamps
+- status indicators
+- multiline text
+
+---
+
+# 13. Message Group Component
+
+Messages from the same sender should group.
+
+Example:
+
+```
+<MessageGroup
+  sender="Ali"
+  messages={[...]}
+>
+```
+
+Rules:
+
+- reduce avatar repetition
+- consistent spacing
+- maintain readability
+
+---
+
+# 14. Message Composer Component
+
+Composer must support:
+
+- multiline input
+- send button
+- attachment trigger
+- disabled state
+- keyboard send
+
+Example:
+
+```
+<MessageComposer
+  value={message}
+  onSend={handleSend}
+/>
+```
+
+---
+
+# 15. Dialog / Modal Standards
+
+Dialogs must use shared **Dialog component**.
+
+Example:
+
+```
+<Dialog
+  title="Create Group"
+  open={isOpen}
+  onClose={close}
+>
+  content
+</Dialog>
+```
+
+Rules:
+
+- consistent padding
+- clear title
+- close button
+- escape key support
+
+---
+
+# 16. Drawer / Panel Standards
+
+Drawers are used for:
+
+- mobile panels
+- details sidebar
+- settings overlays
+
+Example:
+
+```
+<Drawer
+  open={isOpen}
+  onClose={close}
+  side="right"
+>
+```
+
+---
+
+# 17. Empty State Component
+
+All empty states must use shared component.
+
+Example:
+
+```
+<EmptyState
+  title="No messages yet"
+  description="Start the conversation."
+/>
+```
+
+---
+
+# 18. Loading Skeletons
+
+Skeletons must match the shape of real UI.
+
+Example:
+
+```
+<ConversationListSkeleton />
+<MessageListSkeleton />
+```
+
+Rules:
+
+- avoid layout jumps
+- subtle animation
+
+---
+
+# 19. Accessibility Rules
+
+All components must support:
+
+- keyboard navigation
+- focus states
+- ARIA labels when necessary
+- screen reader friendly labels
+
+Example:
+
+```
+<Button aria-label="Send message">
+```
+
+---
+
+# 20. Component Size Consistency
+
+Avoid random sizing.
+
+Examples:
+
+```
+Button heights
+Input heights
+Avatar sizes
+Icon sizes
+```
+
+must be standardized.
+
+---
+
+# 21. Props Best Practices
+
+Props should:
+
+- be explicit
+- avoid too many booleans
+- use enums when needed
+
+Good:
+
+```
+variant="primary"
+size="md"
+```
+
+Bad:
+
+```
+big
+blue
+rounded
+```
+
+---
+
+# 22. Composition Over Duplication
+
+Prefer:
+
+```
+<Card>
+  <CardHeader />
+  <CardContent />
+</Card>
+```
+
+instead of repeating layout code.
+
+---
+
+# 23. State Handling
+
+Components should avoid managing unnecessary global state.
+
+Prefer:
+
+- local state
+- controlled props
+- hooks
+
+---
+
+# 24. Component Testing
+
+Every critical UI component should be testable.
+
+Examples:
+
+- Button click
+- Input validation
+- Dialog open/close
+- Message send
+
+---
+
+# 25. Definition of Done
+
+A component is complete only if:
+
+- reusable
+- accessible
+- styled using design tokens
+- responsive
+- predictable API
+- documented with clear props
+- no duplicated styling logic
+
+---
+
+# 26. Anti Patterns
+
+Do not:
+
+- create huge components
+- mix layout + business logic
+- hardcode styling
+- use inline random styles
+- duplicate UI code
+- create similar components repeatedly
+
+---
+
+# 27. Final Goal
+
+The component system should allow developers to build new screens **quickly and consistently** without reinventing UI patterns.

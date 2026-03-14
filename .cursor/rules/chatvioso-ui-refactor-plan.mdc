@@ -1,0 +1,762 @@
+# Chatvioso UI Refactor Plan
+
+## Purpose
+
+This document defines the exact screen-by-screen plan for rebuilding the **Chatvioso UI from scratch**.
+
+This is a **UI-only refactor plan** focused on:
+
+- screen structure
+- component breakdown
+- UX priorities
+- implementation order
+- consistency across the product
+
+The goal is to avoid random UI work and instead rebuild Chatvioso in a structured, scalable way.
+
+---
+
+# 1. Refactor Strategy
+
+Refactor the product in this order:
+
+1. design foundation
+2. app shell
+3. auth screens
+4. conversation list
+5. active chat screen
+6. message composer
+7. contact flows
+8. group/chat details
+9. settings/profile area
+10. polish and responsive QA
+
+This order matters because later screens depend on earlier UI foundations.
+
+---
+
+# 2. Phase 1 — Design Foundation
+
+This phase creates the base system before rebuilding screens.
+
+## Build in this phase
+
+### 2.1 Design tokens
+Create shared tokens for:
+
+- colors
+- spacing
+- radius
+- shadows
+- typography
+- z-index
+- layout widths/heights
+
+### 2.2 Base reusable UI components
+Build the core primitives first:
+
+- Button
+- IconButton
+- Input
+- SearchInput
+- Textarea
+- Avatar
+- Badge
+- Tabs
+- Dialog
+- Drawer
+- Dropdown
+- Tooltip
+- Skeleton
+- Spinner
+- Separator
+- EmptyState
+- ErrorState
+
+### 2.3 Shared app primitives
+Build shared non-feature-specific blocks:
+
+- AppLogo
+- PageHeader
+- SectionHeader
+- UserPresenceIndicator
+- UnreadBadge
+- StatusPill
+- BackButton
+- ScrollArea wrapper
+
+## Done when
+
+- visual language is established
+- reusable primitives exist
+- no screen needs to invent its own styling rules
+
+---
+
+# 3. Phase 2 — App Shell
+
+This phase builds the structural shell for the app.
+
+## Screens / layouts included
+
+- AuthLayout
+- MainChatLayout
+- SettingsLayout
+- Mobile navigation shell
+
+## Build order
+
+### 3.1 Global App Sidebar
+Sidebar should include:
+
+- logo
+- main navigation
+- chats shortcut
+- contacts shortcut
+- groups shortcut if relevant
+- settings/profile shortcut
+- current user area
+
+### 3.2 Top Header / Topbar
+Header should support:
+
+- current view title
+- contextual actions
+- search trigger if needed
+- mobile navigation trigger
+- profile actions
+
+### 3.3 Main Content Frame
+Create the standard layout containers for:
+
+- conversation list panel
+- active conversation panel
+- optional right details panel
+
+### 3.4 Mobile shell
+Define responsive behavior for:
+
+- sidebar hidden behind drawer
+- conversation list as first-level panel
+- conversation view as second-level panel
+- details panel as overlay/drawer
+
+## UX rules
+
+- app shell must feel stable
+- height must work properly
+- avoid double scroll bugs
+- layout must not shift unexpectedly
+
+## Done when
+
+- desktop shell is usable
+- mobile shell is defined
+- all future screens can plug into this layout cleanly
+
+---
+
+# 4. Phase 3 — Auth Screens
+
+Rebuild all auth-related UI.
+
+## Screens included
+
+- Login
+- Register
+- Forgot Password
+- Reset Password
+
+## Screen structure
+
+### Left/right layout idea
+Desktop may use:
+
+- left: branding or value proposition panel
+- right: auth card/form
+
+Mobile should simplify to:
+
+- centered single-column form
+
+## Components to build
+
+- AuthCard
+- AuthFormHeader
+- EmailField
+- PasswordField
+- AuthSubmitButton
+- FormErrorMessage
+- AuthSidePanel
+
+## UX requirements
+
+- clean and distraction-free
+- strong hierarchy
+- clear error messaging
+- loading states on submit
+- password visibility toggle
+- proper spacing and labels
+
+## Done when
+
+- auth flow looks premium
+- forms are fully consistent
+- mobile auth experience is polished
+
+---
+
+# 5. Phase 4 — Conversation List Area
+
+This phase rebuilds the left conversation panel.
+
+## Main screen area
+
+The conversation list panel should contain:
+
+- panel header
+- search
+- optional tabs/filters
+- recent conversations list
+- pinned items if needed
+- unread indicators
+- empty state
+- loading state
+
+## Components to build
+
+- ConversationPanelHeader
+- ConversationSearch
+- ConversationFilters
+- ConversationList
+- ConversationListItem
+- PinnedConversationSection
+- ConversationEmptyState
+- ConversationListSkeleton
+
+## Conversation list item must support
+
+- avatar
+- display name
+- latest message preview
+- time label
+- unread badge
+- active state
+- muted state
+- pinned state if needed
+- online/offline indicator if relevant
+
+## UX rules
+
+- quick to scan
+- active item must be obvious
+- list density should feel balanced
+- preview text should truncate properly
+- unread state should stand out without looking noisy
+
+## Done when
+
+- conversation browsing feels premium
+- list works on desktop and mobile
+- all list states are covered
+
+---
+
+# 6. Phase 5 — Active Chat Screen
+
+This is the most important phase.
+
+## Main areas inside active chat panel
+
+- conversation header
+- messages area
+- typing / status area
+- composer
+
+## 6.1 Conversation Header
+
+### Must include
+- avatar or group image
+- title/name
+- online/last seen/status text
+- actions
+- details panel trigger
+
+### Components
+- ConversationHeader
+- ConversationHeaderMeta
+- ConversationHeaderActions
+
+## 6.2 Message Area
+
+### Must support
+- message groups
+- own vs other messages
+- timestamp handling
+- day/date separators
+- attachments
+- system messages if any
+- loading state
+- empty state
+
+### Components
+- MessageList
+- MessageGroup
+- MessageBubble
+- MessageMeta
+- MessageStatus
+- DateSeparator
+- TypingIndicator
+- MessageAttachmentPreview
+- MessageListEmptyState
+- MessageListSkeleton
+
+## 6.3 Message Bubble Behavior
+
+Each message bubble should support:
+
+- sender alignment
+- sender style variant
+- time
+- seen/delivered state if available
+- text wrapping
+- attachment rendering
+- grouped appearance with nearby messages
+
+## 6.4 Scroll Behavior
+
+Must ensure:
+
+- message area scrolls independently
+- composer remains anchored
+- loading older messages does not break layout
+- no awkward jumpiness
+
+## UX rules
+
+- reading messages should feel effortless
+- spacing between message groups should feel intentional
+- own and other messages must be instantly distinguishable
+- chat area must feel calm and uncluttered
+
+## Done when
+
+- message experience feels like a real product
+- long conversations are readable
+- empty/loading states feel polished
+
+---
+
+# 7. Phase 6 — Message Composer
+
+The composer deserves its own phase because it is central to the app.
+
+## Composer must support
+
+- multiline text input
+- send button
+- attachment button
+- disabled/loading states
+- keyboard-friendly interaction
+- nice focus state
+- compact but premium layout
+
+## Components
+
+- MessageComposer
+- ComposerToolbar
+- ComposerTextarea
+- ComposerActions
+- SendMessageButton
+- AttachmentTrigger
+
+## UX rules
+
+- send action must be obvious
+- input should expand gracefully
+- composer should not become visually bulky
+- controls should be easy to use on mobile
+- spacing must match premium chat apps
+
+## Optional future-ready space
+Keep architecture ready for:
+
+- emoji button
+- voice note
+- file upload preview
+- reply mode
+- edit mode
+
+Do not overbuild these now unless needed.
+
+## Done when
+
+- sending UI feels smooth
+- mobile usability is strong
+- composer integrates perfectly with chat layout
+
+---
+
+# 8. Phase 7 — Empty, Loading, and Error States
+
+Before secondary screens, make the primary UX resilient.
+
+## Required states to build
+
+### Chat states
+- no conversation selected
+- no messages yet
+- loading conversation
+- failed to load conversation
+
+### Conversation list states
+- loading list
+- no results
+- no conversations
+
+### Search states
+- searching
+- no matches
+- error state
+
+### Contacts/groups/settings
+- empty base templates for each
+
+## Rules
+
+- never leave blank dead areas
+- each state should be informative
+- use helpful copy
+- optionally include CTA buttons where useful
+
+## Done when
+
+- all major screens have robust fallback states
+
+---
+
+# 9. Phase 8 — Contacts UI
+
+Build the contacts management experience.
+
+## Screens / panels
+
+- Contacts page
+- Contact list
+- New chat / start conversation flow
+- Contact details drawer or panel
+
+## Components
+
+- ContactsPageHeader
+- ContactsSearch
+- ContactFilterBar
+- ContactList
+- ContactCard
+- ContactDetailsPanel
+- StartConversationButton
+- ContactsEmptyState
+
+## Contact card should include
+
+- avatar
+- name
+- status/presence if available
+- email/identifier if needed
+- quick action
+
+## UX rules
+
+- should be easy to start a conversation
+- should visually align with conversation list design
+- search should feel fast and clean
+
+## Done when
+
+- users can comfortably browse contacts
+- contacts UI feels like part of the same product
+
+---
+
+# 10. Phase 9 — Groups / Shared Chat Details
+
+Build group and details side-panel experiences.
+
+## Areas to build
+
+- chat details panel
+- group details
+- member list
+- shared media/files panel
+- group settings block
+- create group modal if needed
+
+## Components
+
+- ChatDetailsPanel
+- GroupHeaderCard
+- MembersList
+- MemberRow
+- SharedFilesSection
+- SharedMediaGrid
+- GroupSettingsSection
+- CreateGroupDialog
+
+## Details panel should support
+
+- chat/group avatar
+- title
+- description
+- member count
+- quick actions
+- attachments/media sections
+- member list
+
+## UX rules
+
+- should not feel overcrowded
+- use sections with clear headings
+- destructive actions should be separated
+- mobile should use drawer instead of fixed right panel
+
+## Done when
+
+- chat details are clean and useful
+- group screens feel structured and scalable
+
+---
+
+# 11. Phase 10 — Profile and Settings
+
+Build account and preferences screens.
+
+## Screens included
+
+- Profile settings
+- Account settings
+- Notification settings
+- Appearance settings
+- Privacy/security settings if needed
+
+## Components
+
+- SettingsSidebar
+- SettingsPageHeader
+- SettingsSection
+- SettingsCard
+- ProfileForm
+- AvatarUploadBlock
+- PasswordChangeForm
+- NotificationPreferenceRow
+- ThemePreferenceCard
+- DangerZoneSection
+
+## UX rules
+
+- settings must feel calm and organized
+- use sections, cards, and strong spacing
+- avoid giant unstructured forms
+- destructive settings should be clearly isolated
+
+## Done when
+
+- settings experience feels premium
+- all forms are visually consistent
+- mobile settings flow is clean
+
+---
+
+# 12. Phase 11 — Search and Utility Flows
+
+After the core screens are stable, build secondary UX flows.
+
+## Possible flows
+
+- global search UI
+- new message modal
+- invite user modal
+- file preview modal
+- user profile popover
+- notifications drawer
+
+## Rules
+
+- only build what product currently needs
+- use existing modal/drawer patterns
+- do not invent new visual language
+
+---
+
+# 13. Phase 12 — Responsive Refinement
+
+Now refine every major UI area across breakpoints.
+
+## Check and fix
+
+### Desktop
+- spacing
+- panel widths
+- multi-column comfort
+- scroll behaviors
+
+### Tablet
+- collapsing panel behavior
+- drawer transitions
+- topbar action spacing
+
+### Mobile
+- panel switching
+- touch target sizing
+- composer usability
+- chat readability
+- header compactness
+
+## Done when
+
+- app feels intentionally designed for each breakpoint
+- not just "shrunk down desktop UI"
+
+---
+
+# 14. Phase 13 — Interaction Polish
+
+Add subtle product polish.
+
+## Add carefully
+
+- hover states
+- active states
+- focus states
+- panel transitions
+- skeleton shimmer
+- subtle drawer/modal animation
+- list hover polish
+- button loading polish
+
+## Avoid
+
+- dramatic movement
+- bouncy animation
+- flashy unnecessary effects
+
+## Done when
+
+- interface feels smooth and intentional
+- motion supports usability instead of distracting
+
+---
+
+# 15. Phase 14 — Accessibility Pass
+
+Run a dedicated accessibility cleanup.
+
+## Check all screens for
+
+- semantic headings
+- labels
+- button accessibility
+- keyboard navigation
+- tab order
+- focus visibility
+- contrast
+- aria labels where needed
+- icon-only button clarity
+
+## Done when
+
+- product is usable beyond mouse-only interaction
+- important states are not color-only
+
+---
+
+# 16. Phase 15 — Final Cleanup
+
+Finish with a technical and visual cleanup pass.
+
+## Cleanup tasks
+
+- remove dead components
+- remove old UI files
+- remove duplicated styles
+- align variant APIs
+- unify spacing inconsistencies
+- simplify over-complicated components
+- normalize naming
+- remove leftover old design patterns
+
+## Done when
+
+- codebase feels intentionally rebuilt
+- no half-old / half-new UI remains
+
+---
+
+# 17. Recommended Implementation Order Summary
+
+Follow this exact order:
+
+1. design tokens
+2. base UI components
+3. shared primitives
+4. app shell
+5. auth screens
+6. conversation list
+7. active chat header
+8. message list
+9. message bubble/group system
+10. composer
+11. primary empty/loading/error states
+12. contacts
+13. details/group UI
+14. settings/profile
+15. search and support flows
+16. responsive pass
+17. accessibility pass
+18. final cleanup
+
+---
+
+# 18. Definition of Done Per Screen
+
+A screen is complete only if:
+
+- layout is stable
+- visual hierarchy is clear
+- reusable components are used
+- responsive behavior works
+- empty/loading/error states exist
+- keyboard/focus states exist
+- no obvious duplicate code remains
+- it matches the Chatvioso design system
+- it feels production-ready
+
+---
+
+# 19. Strict Refactor Rules
+
+While rebuilding screens, do not:
+
+- redesign each screen independently
+- use inconsistent spacing
+- keep old messy structure just because it works
+- create special-case UI components without good reason
+- ignore mobile until the end
+- skip empty/loading/error states
+- create giant page-level files
+- mix multiple design languages
+- overcomplicate features before the core UX is solid
+
+---
+
+# 20. Final Refactor Mindset
+
+For every screen, ask:
+
+1. Is this simpler than before?
+2. Is this more reusable than before?
+3. Is this visually cleaner than before?
+4. Is this more responsive than before?
+5. Is this easier to maintain than before?
+6. Does this feel like a real product?
+
+If not, keep improving before marking the screen complete.
