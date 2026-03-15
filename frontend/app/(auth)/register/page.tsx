@@ -7,6 +7,7 @@ import { register as registerApi } from "@/lib/auth";
 import { Input } from "@/components/ui/input";
 import {
   AuthCard,
+  AuthCardLogo,
   AuthFormHeader,
   AuthSubmitButton,
   AuthFooterText,
@@ -45,6 +46,7 @@ export default function RegisterPage() {
 
   return (
     <AuthCard>
+      <AuthCardLogo className="mb-5" />
       <AuthFormHeader
         title="Chatvioso"
         description="Create your account"

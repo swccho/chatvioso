@@ -33,7 +33,7 @@ export function ConversationListItemAvatar({
       {showPresence && (
         <span
           className={cn(
-            "absolute bottom-0 right-0 ring-2 ring-surface-muted rounded-full"
+            "absolute bottom-0 right-0 ring-2 ring-panel rounded-full"
           )}
           aria-hidden
         >

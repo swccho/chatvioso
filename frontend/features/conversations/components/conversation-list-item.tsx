@@ -33,10 +33,10 @@ export function ConversationListItem({
       role="listitem"
       title={displayName}
       className={cn(
-        "flex items-center gap-3 rounded-r-lg border-l-2 py-2.5 pl-3 pr-3 text-left transition-colors min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2",
+        "flex items-center gap-3 rounded-r-lg border-l-2 py-2.5 pl-3 pr-3 text-left transition-colors min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel",
         isActive
-          ? "border-brand bg-brand-soft text-primary"
-          : "border-transparent text-primary-secondary hover:bg-surface-muted"
+          ? "border-l-[3px] border-transparent bg-panel-selected text-primary-inverse"
+          : "border-transparent text-primary-inverse hover:bg-panel-selected"
       )}
     >
       <ConversationListItemAvatar

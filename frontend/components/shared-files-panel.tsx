@@ -103,11 +103,11 @@ export function SharedFilesPanel({
       {files.map((att) => (
         <li
           key={att.id}
-          className="flex flex-col gap-0.5 min-w-0 rounded-md border border-border-muted bg-surface-muted/50 px-3 py-2"
+          className="flex flex-col gap-0.5 min-w-0 rounded-md border border-border-panel bg-panel-selected/80 px-3 py-2"
         >
           <div className="flex items-center justify-between gap-2 min-w-0">
             <span
-              className="text-sm text-primary truncate"
+              className="text-sm text-primary-inverse truncate"
               title={att.original_name}
             >
               {att.original_name}
@@ -116,14 +116,14 @@ export function SharedFilesPanel({
               type="button"
               variant="ghost"
               size="sm"
-              className="shrink-0 text-primary-muted h-8 px-2"
+              className="shrink-0 text-panel-muted h-8 px-2 hover:bg-panel hover:text-primary-inverse"
               onClick={() => handleDownload(att)}
               aria-label={`Download ${att.original_name}`}
             >
               Download
             </Button>
           </div>
-          <div className="flex items-center gap-2 text-xs text-primary-muted">
+          <div className="flex items-center gap-2 text-xs text-panel-muted">
             {att.size != null && (
               <span>{formatFileSize(att.size)}</span>
             )}

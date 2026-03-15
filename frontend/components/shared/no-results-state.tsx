@@ -8,6 +8,7 @@ export interface NoResultsStateProps {
   onClearSearch?: () => void;
   clearLabel?: string;
   className?: string;
+  variant?: "default" | "panel";
 }
 
 /**
@@ -18,7 +19,9 @@ export function NoResultsState({
   onClearSearch,
   clearLabel = "Clear search",
   className,
+  variant = "default",
 }: NoResultsStateProps) {
+  const isPanel = variant === "panel";
   return (
     <div
       className={cn(
@@ -26,7 +29,14 @@ export function NoResultsState({
         className
       )}
     >
-      <p className="text-sm text-primary-secondary max-w-sm">{message}</p>
+      <p
+        className={cn(
+          "text-sm max-w-sm",
+          isPanel ? "text-panel-muted" : "text-primary-secondary"
+        )}
+      >
+        {message}
+      </p>
       {onClearSearch && (
         <Button variant="ghost" size="sm" onClick={onClearSearch}>
           {clearLabel}

@@ -21,12 +21,14 @@ export function ConversationPanelActions({
   return (
     <Dropdown
       align="end"
+      contentClassName="bg-panel border-border-panel text-primary-inverse"
       trigger={
         <IconButton
           icon={<Plus className="size-5" />}
           aria-label="New conversation"
           variant="ghost"
           size="sm"
+          className="text-primary-inverse hover:bg-panel-selected"
         />
       }
     >

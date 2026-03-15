@@ -23,7 +23,7 @@ export function ConversationSearch({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       className={cn(
-        "h-9 text-sm border-border-muted bg-surface text-primary placeholder:text-primary-muted focus-visible:ring-brand",
+        "h-9 text-sm border-0 bg-panel-search text-primary-inverse placeholder:text-panel-muted focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel [&_.pointer-events-none]:text-panel-muted",
         className
       )}
     />

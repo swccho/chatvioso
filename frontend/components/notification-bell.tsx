@@ -61,7 +61,7 @@ export function NotificationBell() {
         <Bell className="size-5" aria-hidden />
         {count > 0 && (
           <span
-            className="absolute top-0.5 right-0.5 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-state-danger text-primary-inverse px-1.5 text-xs font-medium"
+            className="absolute top-0.5 right-0.5 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-notification-badge text-primary-inverse px-1.5 text-xs font-medium"
             aria-hidden
           >
             {count > 99 ? "99+" : count}
@@ -70,7 +70,7 @@ export function NotificationBell() {
       </Button>
       {open && (
         <div
-          className="absolute right-0 top-full mt-1 w-80 rounded-lg border border-border-muted bg-surface shadow-overlay z-dropdown max-h-[400px] flex flex-col"
+          className="absolute left-0 top-full mt-1 w-80 rounded-lg border border-border-muted bg-surface shadow-overlay z-dropdown max-h-[400px] flex flex-col"
           role="dialog"
           aria-label="Notifications"
         >

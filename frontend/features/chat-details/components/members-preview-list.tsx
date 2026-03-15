@@ -15,7 +15,7 @@ export function MembersPreviewList({
 }: MembersPreviewListProps) {
   if (members.length === 0) {
     return (
-      <p className="text-xs text-primary-muted py-2">
+      <p className="text-xs text-panel-muted py-2">
         No members loaded.
       </p>
     );

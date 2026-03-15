@@ -80,12 +80,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           />
         ) : (
           <div className="flex flex-1 min-h-0 items-center justify-center p-4">
-            <EmptyState
-              title="Conversation details"
-              description="Select a conversation to see details, members, files, and pinned messages here."
-              icon={<MessageCircle className="size-8" />}
-              className="py-8 max-w-[260px]"
-            />
+            <div className="w-full max-w-[260px] rounded-xl border border-border-panel bg-panel-selected px-6 py-8 text-center">
+              <EmptyState
+                title="Conversation details"
+                description="Select a conversation to see details, members, files, and pinned messages here."
+                icon={<MessageCircle className="size-8" />}
+                className="py-0 max-w-[260px]"
+                variant="panel"
+              />
+            </div>
           </div>
         )}
       </RightDetailPanelShell>

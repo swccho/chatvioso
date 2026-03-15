@@ -25,7 +25,7 @@ export function ChatDetailsPanel({
   return (
     <div
       className={cn(
-        "flex flex-col h-full min-h-0 bg-surface-muted border-l border-border-muted overflow-hidden",
+        "flex flex-col h-full min-h-0 bg-panel border-l-0 border-border-panel overflow-hidden text-primary-inverse",
         className
       )}
       aria-label="Conversation details"

@@ -25,15 +25,15 @@ export function ChatDetailsSection({
   return (
     <section
       className={cn(
-        "shrink-0 border-b border-border-muted last:border-b-0",
+        "shrink-0 border-b border-border-panel last:border-b-0",
         className
       )}
       aria-labelledby={headingId}
     >
-      <div className="flex items-center justify-between gap-2 px-4 py-2.5 bg-surface-muted/50 min-h-[40px]">
+      <div className="flex items-center justify-between gap-2 px-4 py-2.5 bg-panel min-h-[40px]">
         <h3
           id={headingId}
-          className="text-sm font-medium text-primary truncate"
+          className="text-sm font-medium text-primary-inverse truncate"
         >
           {title}
         </h3>

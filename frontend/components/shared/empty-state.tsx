@@ -10,6 +10,8 @@ export interface EmptyStateProps {
   onAction?: () => void;
   className?: string;
   icon?: React.ReactNode;
+  /** Use "panel" when inside dark sidebar/panel for correct text colors */
+  variant?: "default" | "panel";
 }
 
 export function EmptyState({
@@ -19,7 +21,9 @@ export function EmptyState({
   onAction,
   className,
   icon,
+  variant = "default",
 }: EmptyStateProps) {
+  const isPanel = variant === "panel";
   return (
     <div
       className={cn(
@@ -27,10 +31,33 @@ export function EmptyState({
         className
       )}
     >
-      {icon && <div className="mb-3 text-primary-muted [&_svg]:size-10">{icon}</div>}
-      <p className="font-medium text-primary">{title}</p>
+      {icon && (
+        <div
+          className={cn(
+            "mb-3 [&_svg]:size-10",
+            isPanel ? "text-panel-muted" : "text-primary-muted"
+          )}
+        >
+          {icon}
+        </div>
+      )}
+      <p
+        className={cn(
+          "font-medium",
+          isPanel ? "text-primary-inverse" : "text-primary"
+        )}
+      >
+        {title}
+      </p>
       {description && (
-        <p className="mt-1 text-sm text-primary-secondary max-w-sm">{description}</p>
+        <p
+          className={cn(
+            "mt-1 text-sm max-w-sm",
+            isPanel ? "text-panel-muted" : "text-primary-secondary"
+          )}
+        >
+          {description}
+        </p>
       )}
       {actionLabel && onAction && (
         <Button variant="primary" className="mt-4" onClick={onAction}>

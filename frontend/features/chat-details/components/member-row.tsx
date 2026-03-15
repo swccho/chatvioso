@@ -27,8 +27,8 @@ export function MemberRow({ member, className }: MemberRowProps) {
         className="shrink-0"
       />
       <div className="min-w-0 flex-1">
-        <p className="text-sm text-primary truncate">{displayName}</p>
-        <p className="text-xs text-primary-muted">Member</p>
+        <p className="text-sm text-primary-inverse truncate">{displayName}</p>
+        <p className="text-xs text-panel-muted">Member</p>
       </div>
     </div>
   );

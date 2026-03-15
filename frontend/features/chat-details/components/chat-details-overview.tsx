@@ -40,28 +40,28 @@ export function ChatDetailsOverview({
   return (
     <div
       className={cn(
-        "px-4 py-3 border-b border-border-muted bg-surface-muted/50",
+        "px-4 py-3 border-b border-border-panel bg-panel-selected/50",
         className
       )}
       aria-label="Conversation overview"
     >
       <dl className="space-y-1.5 text-xs">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-          <dt className="text-primary-muted shrink-0">Type</dt>
-          <dd className="text-primary">{typeLabel}</dd>
+          <dt className="text-panel-muted shrink-0">Type</dt>
+          <dd className="text-primary-inverse">{typeLabel}</dd>
         </div>
         {memberCount > 0 && (
           <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-            <dt className="text-primary-muted shrink-0">Members</dt>
-            <dd className="text-primary">
+            <dt className="text-panel-muted shrink-0">Members</dt>
+            <dd className="text-primary-inverse">
               {memberCount} {memberCount === 1 ? "member" : "members"}
             </dd>
           </div>
         )}
         {createdFormatted && (
           <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-            <dt className="text-primary-muted shrink-0">Started</dt>
-            <dd className="text-primary">{createdFormatted}</dd>
+            <dt className="text-panel-muted shrink-0">Started</dt>
+            <dd className="text-primary-inverse">{createdFormatted}</dd>
           </div>
         )}
       </dl>

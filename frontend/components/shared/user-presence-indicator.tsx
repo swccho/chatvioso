@@ -26,7 +26,7 @@ export function UserPresenceIndicator({
       className={cn(
         "shrink-0 rounded-full",
         sizeClasses[size],
-        online ? "bg-state-success" : "bg-primary-muted",
+        online ? "bg-online" : "bg-panel-muted",
         className
       )}
       aria-label={ariaLabel ?? (online ? "Online" : "Offline")}

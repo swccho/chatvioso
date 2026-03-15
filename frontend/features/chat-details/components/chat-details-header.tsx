@@ -30,7 +30,7 @@ export function ChatDetailsHeader({
   return (
     <header
       className={cn(
-        "flex items-center gap-3 border-b border-border-muted bg-surface px-4 py-3 shrink-0",
+        "flex items-center gap-3 border-b border-border-panel bg-panel px-4 py-3 shrink-0",
         className
       )}
       aria-label="Conversation details"
@@ -42,8 +42,8 @@ export function ChatDetailsHeader({
         className="shrink-0"
       />
       <div className="min-w-0 flex-1">
-        <h2 className="text-sm font-semibold text-primary truncate">{displayName}</h2>
-        <p className="text-xs text-primary-muted truncate mt-0.5">{subtitle}</p>
+        <h2 className="text-sm font-semibold text-primary-inverse truncate">{displayName}</h2>
+        <p className="text-xs text-panel-muted truncate mt-0.5">{subtitle}</p>
       </div>
     </header>
   );

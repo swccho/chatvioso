@@ -5,31 +5,43 @@
  */
 
 :root {
-  /* Colors - backgrounds */
-  --bg-app: 248 250 252;
+  /* Dark rail (left nav) - almost black */
+  --bg-rail: 26 27 31;
+  /* Dark panels (conversations list + right details) */
+  --bg-panel: 47 49 54;
+  --bg-panel-search: 60 63 69;
+  --bg-panel-selected: 58 59 64;
+  /* Panel text */
+  --text-panel: 255 255 255;
+  --text-panel-muted: 142 146 151;
+  --text-panel-section: 176 181 185;
+  --border-panel: 64 66 74;
+
+  /* Colors - backgrounds (app shell: dark; main chat: light) */
+  --bg-app: 26 27 31;
   --bg-surface: 255 255 255;
-  --bg-surface-muted: 241 245 249;
+  --bg-surface-muted: 47 49 54;
   --bg-surface-elevated: 255 255 255;
-  --bg-sidebar: 255 255 255;
-  --bg-chat: 248 250 252;
+  --bg-sidebar: 26 27 31;
+  --bg-chat: 255 255 255;
   --bg-composer: 255 255 255;
 
-  /* Colors - text */
-  --text-primary: 15 23 42;
+  /* Colors - text (primary used in main chat area) */
+  --text-primary: 44 44 47;
   --text-secondary: 71 85 105;
-  --text-muted: 100 116 139;
+  --text-muted: 153 153 153;
   --text-inverse: 255 255 255;
-  --text-brand: 67 56 202;
+  --text-brand: 124 58 237;
 
   /* Colors - borders */
   --border-default: 226 232 240;
   --border-muted: 241 245 249;
   --border-strong: 203 213 225;
 
-  /* Colors - brand */
-  --brand-primary: 67 56 202;
-  --brand-primary-hover: 55 48 163;
-  --brand-primary-soft: 238 242 255;
+  /* Colors - brand (violet) */
+  --brand-primary: 124 58 237;
+  --brand-primary-hover: 109 40 217;
+  --brand-primary-soft: 237 233 254;
 
   /* Colors - state */
   --success: 34 197 94;
@@ -37,11 +49,19 @@
   --danger: 239 68 68;
   --info: 59 130 246;
 
+  /* Auth screen: single centered form on dark grey (matches app panel grey) */
+  --bg-auth: 47 49 54;
+
+  /* UI accents (screenshot) */
+  --online: 67 181 129;
+  --badge-channel: 111 66 193;
+  --notification-badge: 240 71 71;
+
   /* Message bubbles */
-  --message-own-bg: 238 242 255;
-  --message-own-text: 30 27 75;
+  --message-own-bg: 237 233 254;
+  --message-own-text: 46 16 101;
   --message-other-bg: 255 255 255;
-  --message-other-text: 15 23 42;
+  --message-other-text: 44 44 47;
 
   /* Spacing scale (px) */
   --space-1: 4px;

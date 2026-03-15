@@ -13,7 +13,7 @@ export function ConversationListItemMeta({ conversation }: ConversationListItemM
   const unreadCount = conversation.unread_count ?? 0;
   return (
     <div className="shrink-0 flex items-center gap-1.5">
-      <span className="text-xs text-primary-muted">
+      <span className="text-xs text-panel-muted">
         {formatConversationListTime(time)}
       </span>
       {unreadCount > 0 && (

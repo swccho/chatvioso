@@ -28,7 +28,7 @@ export function RightDetailPanelShell({
     return (
       <div
         className={cn(
-          "hidden lg:flex w-12 shrink-0 flex-col items-center border-l border-border-muted bg-surface-muted py-2"
+          "hidden lg:flex w-12 shrink-0 flex-col items-center border-l border-border-panel bg-panel py-2 text-primary-inverse"
         )}
         aria-label="Conversation details (collapsed)"
       >
@@ -37,6 +37,7 @@ export function RightDetailPanelShell({
           aria-label="Show details panel"
           variant="ghost"
           size="md"
+          className="text-primary-inverse hover:bg-panel-selected"
           onClick={() => onOpenChange(true)}
         />
       </div>
@@ -46,18 +47,19 @@ export function RightDetailPanelShell({
   return (
     <aside
       className={cn(
-        "hidden lg:flex w-[300px] shrink-0 flex-col border-l border-border-muted bg-surface overflow-hidden",
+        "hidden lg:flex w-[300px] shrink-0 flex-col border-l border-border-panel bg-panel overflow-hidden text-primary-inverse",
         className
       )}
       aria-label="Conversation details"
     >
       {canToggle && (
-        <div className="shrink-0 flex justify-end border-b border-border-muted px-1 py-1.5">
+        <div className="shrink-0 flex justify-end border-b border-border-panel px-1 py-1.5">
           <IconButton
             icon={<PanelRightClose className="size-5" />}
             aria-label="Hide details panel"
             variant="ghost"
             size="sm"
+            className="text-primary-inverse hover:bg-panel-selected"
             onClick={() => onOpenChange(false)}
           />
         </div>

@@ -74,11 +74,11 @@ export function ConversationsPanelShell({
             onNewChannel={onNewChannel}
           />
         }
-        className="border-border-muted"
+        className="border-border-panel"
       />
 
       {currentWorkspace && (
-        <div className="shrink-0 space-y-1.5 px-3 py-2 border-b border-border-muted">
+        <div className="shrink-0 space-y-1.5 px-3 py-2 border-b border-border-panel">
           <ConversationSearch
             value={searchQuery}
             onChange={setSearchQuery}
@@ -86,7 +86,7 @@ export function ConversationsPanelShell({
           />
           <Link
             href={`/app/workspaces/${currentWorkspace.id}/search`}
-            className="text-xs text-primary-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 rounded"
+            className="text-xs text-panel-muted hover:text-primary-inverse focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel rounded"
             aria-label="Search workspace"
           >
             Search workspace
@@ -96,7 +96,7 @@ export function ConversationsPanelShell({
 
       <div className="flex-1 min-h-0 overflow-y-auto">
         {!currentWorkspace ? (
-          <div className="px-3 py-4 text-sm text-primary-muted">
+          <div className="px-3 py-4 text-sm text-panel-muted">
             Select a workspace
           </div>
         ) : isLoading ? (
@@ -109,6 +109,7 @@ export function ConversationsPanelShell({
               message="Failed to load conversations."
               onRetry={() => refetch()}
               retryLabel="Try again"
+              variant="panel"
             />
           </div>
         ) : noSearchResults ? (
@@ -117,6 +118,7 @@ export function ConversationsPanelShell({
               message="No conversations match your search."
               onClearSearch={() => setSearchQuery("")}
               clearLabel="Clear search"
+              variant="panel"
             />
           </div>
         ) : !hasAny ? (
@@ -131,7 +133,7 @@ export function ConversationsPanelShell({
               count={direct.length}
               ariaLabel="Direct messages"
               empty={
-                <p className="px-3 py-2 text-xs text-primary-muted">
+                <p className="px-3 py-2 text-xs text-panel-muted">
                   No direct messages
                 </p>
               }
@@ -163,7 +165,7 @@ export function ConversationsPanelShell({
               count={channels.length}
               ariaLabel="Channels"
               empty={
-                <p className="px-3 py-2 text-xs text-primary-muted">
+                <p className="px-3 py-2 text-xs text-panel-muted">
                   No channels
                 </p>
               }
@@ -184,7 +186,7 @@ export function ConversationsPanelShell({
               count={groups.length}
               ariaLabel="Groups"
               empty={
-                <p className="px-3 py-2 text-xs text-primary-muted">
+                <p className="px-3 py-2 text-xs text-panel-muted">
                   No groups
                 </p>
               }
@@ -209,7 +211,7 @@ export function ConversationsPanelShell({
     <>
       <aside
         className={cn(
-          "flex w-[300px] shrink-0 flex-col border-r border-border-muted bg-surface overflow-hidden",
+          "flex w-[300px] shrink-0 flex-col border-r border-border-panel bg-panel overflow-hidden text-primary-inverse",
           "hidden md:flex",
           className
         )}
@@ -218,7 +220,7 @@ export function ConversationsPanelShell({
         {panelContent}
       </aside>
 
-      <div className="md:hidden shrink-0 flex items-center justify-center border-r border-border-muted bg-surface w-14 py-2 min-h-[44px]">
+      <div className="md:hidden shrink-0 flex items-center justify-center border-r border-border-panel bg-panel w-14 py-2 min-h-[44px] text-primary-inverse">
         <IconButton
           icon={<MessageSquare className="size-5" />}
           aria-label="Open conversations"
@@ -229,9 +231,9 @@ export function ConversationsPanelShell({
       </div>
 
       <Drawer open={mobileOpen} onOpenChange={setMobileOpen} side="left">
-        <div className="flex flex-col h-full w-full min-w-0 max-w-[300px] bg-surface">
-          <div className="shrink-0 flex items-center justify-between border-b border-border-muted px-3 py-2">
-            <span className="text-sm font-medium text-primary">Conversations</span>
+        <div className="flex flex-col h-full w-full min-w-0 max-w-[300px] bg-panel text-primary-inverse">
+          <div className="shrink-0 flex items-center justify-between border-b border-border-panel px-3 py-2">
+            <span className="text-sm font-medium text-primary-inverse">Conversations</span>
             <IconButton
               icon={<X className="size-5" />}
               aria-label="Close"

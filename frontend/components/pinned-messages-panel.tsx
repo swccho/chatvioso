@@ -50,6 +50,7 @@ export function PinnedMessagesPanel({
           title="No pinned messages"
           description="Pin important messages to find them here."
           className="py-6"
+          variant="panel"
         />
       </div>
     );
@@ -62,12 +63,12 @@ export function PinnedMessagesPanel({
           <Link
             href={`/app/workspaces/${workspaceId}/conversations/${conversationId}`}
             className={cn(
-              "block rounded-md border border-border-muted bg-surface-muted/50 px-3 py-2",
-              "text-sm text-primary line-clamp-2 break-words",
-              "hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+              "block rounded-md border border-border-panel bg-panel-selected/80 px-3 py-2",
+              "text-sm text-primary-inverse line-clamp-2 break-words",
+              "hover:bg-panel-selected focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-panel"
             )}
           >
-            <span className="block text-xs text-primary-muted mb-0.5">
+            <span className="block text-xs text-panel-muted mb-0.5">
               {msg.user?.name ?? "Unknown"} · {formatMessageTime(msg.created_at)}
             </span>
             <span className="line-clamp-2">{msg.body}</span>

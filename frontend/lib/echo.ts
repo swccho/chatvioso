@@ -2,9 +2,9 @@
 
 /**
  * Laravel Echo (Reverb) client for realtime presence/typing.
- * Requires the Laravel Reverb server to be running (php artisan reverb:start)
- * and BROADCAST_CONNECTION=reverb in the backend .env. If Reverb is not running,
- * you will see WebSocket connection errors in the console; the rest of the app still works.
+ * Only connects when NEXT_PUBLIC_REVERB_APP_KEY is set. If unset, no WebSocket is opened
+ * (no console errors). When set, ensure Laravel Reverb is running (php artisan reverb:start)
+ * and BROADCAST_CONNECTION=reverb in the backend .env.
  */
 import Echo from "laravel-echo";
 import Pusher from "pusher-js";
@@ -26,13 +26,15 @@ let echoInstance: InstanceType<typeof Echo> | null = null;
 
 export function getEcho(): InstanceType<typeof Echo> | null {
   if (typeof window === "undefined") return null;
+  const key = process.env.NEXT_PUBLIC_REVERB_APP_KEY?.trim();
+  if (!key) return null;
   const token = getToken();
   if (!token) return null;
 
   if (!echoInstance) {
     echoInstance = new Echo({
       broadcaster: "reverb",
-      key: process.env.NEXT_PUBLIC_REVERB_APP_KEY ?? "",
+      key,
       wsHost: process.env.NEXT_PUBLIC_REVERB_HOST ?? "localhost",
       wsPort: process.env.NEXT_PUBLIC_REVERB_PORT ? Number(process.env.NEXT_PUBLIC_REVERB_PORT) : 8080,
       wssPort: process.env.NEXT_PUBLIC_REVERB_PORT ? Number(process.env.NEXT_PUBLIC_REVERB_PORT) : 443,

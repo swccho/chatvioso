@@ -16,9 +16,9 @@ export function ConversationListItemContent({
   const preview = conversation.last_message_preview ?? null;
   return (
     <div className="min-w-0 flex-1">
-      <p className="truncate text-sm font-medium text-primary">{displayName}</p>
+      <p className="truncate text-sm font-medium text-primary-inverse">{displayName}</p>
       {preview && (
-        <p className="truncate text-xs text-primary-muted">{preview}</p>
+        <p className="truncate text-xs text-panel-muted">{preview}</p>
       )}
     </div>
   );

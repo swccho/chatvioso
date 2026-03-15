@@ -34,7 +34,7 @@ export function ConversationHeader({
     return (
       <header
         className={cn(
-          "h-12 shrink-0 border-b border-border-muted px-4 flex items-center bg-surface",
+          "h-12 shrink-0 border-b border-border-default px-4 flex items-center bg-chat",
           className
         )}
         aria-label="Conversation"
@@ -62,11 +62,12 @@ export function ConversationHeader({
         ? "Online"
         : null
       : `${count} member${count === 1 ? "" : "s"}`;
+  const subtitleIsOnline = conversation.type === "direct" && isOtherOnline;
 
   return (
     <header
       className={cn(
-        "h-12 shrink-0 border-b border-border-muted px-4 flex items-center gap-3 bg-surface",
+        "h-12 shrink-0 border-b border-border-default px-4 flex items-center gap-3 bg-chat",
         className
       )}
       aria-label={`Conversation: ${displayName}`}
@@ -83,14 +84,17 @@ export function ConversationHeader({
         </h1>
         <div className="flex items-center gap-2 min-w-0">
           {subtitle && (
-            <span className="text-xs text-primary-muted truncate">
+            <span className={cn(
+              "text-xs truncate",
+              subtitleIsOnline ? "text-online" : "text-primary-muted"
+            )}>
               {subtitle}
             </span>
           )}
           {presentUsers.length > 0 && conversation.type !== "direct" && (
-            <span className="flex items-center gap-1 shrink-0" title="Online">
+            <span className="flex items-center gap-1 shrink-0 text-online" title="Online">
               <UserPresenceIndicator online size="sm" />
-              <span className="text-xs text-primary-muted">
+              <span className="text-xs">
                 {presentUsers.length} online
               </span>
             </span>

@@ -8,6 +8,7 @@ import { login } from "@/lib/auth";
 import { Input } from "@/components/ui/input";
 import {
   AuthCard,
+  AuthCardLogo,
   AuthFormHeader,
   AuthSubmitButton,
   AuthFooterText,
@@ -41,6 +42,7 @@ export default function LoginPage() {
 
   return (
     <AuthCard>
+      <AuthCardLogo className="mb-5" />
       <AuthFormHeader
         title="Chatvioso"
         description="Sign in to your account"

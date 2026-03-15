@@ -11,7 +11,7 @@ export function AuthCard({ children, className }: AuthCardProps) {
   return (
     <div
       className={cn(
-        "w-full rounded-xl border border-border-muted bg-surface p-6 shadow-card sm:p-8",
+        "w-full rounded-xl border border-border-default bg-surface p-6 shadow-overlay sm:p-8",
         className
       )}
     >

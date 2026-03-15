@@ -21,7 +21,7 @@ export function WorkspaceRailFooter({
   return (
     <div
       className={cn(
-        "shrink-0 flex flex-col items-center gap-1 border-t border-border-muted pt-2 pb-2",
+        "shrink-0 flex flex-col items-center gap-1 border-t border-border-panel pt-2 pb-2",
         className
       )}
       role="region"
@@ -29,6 +29,8 @@ export function WorkspaceRailFooter({
     >
       <Dropdown
         align="start"
+        side="top"
+        contentClassName="bg-panel border-border-panel text-primary-inverse"
         trigger={
           <div className="flex items-center justify-center">
             {user ? (
@@ -58,7 +60,7 @@ export function WorkspaceRailFooter({
         <div className="py-1">
           <Link
             href="/app/profile"
-            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-primary hover:bg-surface-muted focus:bg-surface-muted focus:outline-none"
+            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-primary-inverse hover:bg-panel-selected focus:bg-panel-selected focus:outline-none"
           >
             <User className="size-4 shrink-0" />
             Profile

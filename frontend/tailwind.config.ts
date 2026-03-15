@@ -18,6 +18,12 @@ const config: Config = {
         sidebar: "rgb(var(--bg-sidebar))",
         chat: "rgb(var(--bg-chat))",
         composer: "rgb(var(--bg-composer))",
+        rail: "rgb(var(--bg-rail))",
+        panel: "rgb(var(--bg-panel))",
+        "panel-search": "rgb(var(--bg-panel-search))",
+        "panel-selected": "rgb(var(--bg-panel-selected))",
+        "panel-muted": "rgb(var(--text-panel-muted))",
+        "panel-section": "rgb(var(--text-panel-section))",
         primary: {
           DEFAULT: "rgb(var(--text-primary))",
           secondary: "rgb(var(--text-secondary))",
@@ -29,6 +35,7 @@ const config: Config = {
           default: "rgb(var(--border-default))",
           muted: "rgb(var(--border-muted))",
           strong: "rgb(var(--border-strong))",
+          panel: "rgb(var(--border-panel))",
         },
         brand: {
           DEFAULT: "rgb(var(--brand-primary))",
@@ -47,6 +54,10 @@ const config: Config = {
           danger: "rgb(var(--danger))",
           info: "rgb(var(--info))",
         },
+        online: "rgb(var(--online))",
+        "badge-channel": "rgb(var(--badge-channel))",
+        "notification-badge": "rgb(var(--notification-badge))",
+        auth: "rgb(var(--bg-auth))",
       },
       borderRadius: {
         lg: "var(--radius)",

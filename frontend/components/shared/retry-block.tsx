@@ -8,6 +8,7 @@ export interface RetryBlockProps {
   onRetry: () => void;
   retryLabel?: string;
   className?: string;
+  variant?: "default" | "panel";
 }
 
 export function RetryBlock({
@@ -15,7 +16,9 @@ export function RetryBlock({
   onRetry,
   retryLabel = "Try again",
   className,
+  variant = "default",
 }: RetryBlockProps) {
+  const isPanel = variant === "panel";
   return (
     <div
       className={cn(
@@ -23,7 +26,14 @@ export function RetryBlock({
         className
       )}
     >
-      <p className="text-sm text-primary-secondary max-w-sm">{message}</p>
+      <p
+        className={cn(
+          "text-sm max-w-sm",
+          isPanel ? "text-panel-muted" : "text-primary-secondary"
+        )}
+      >
+        {message}
+      </p>
       <Button variant="outline" size="sm" onClick={onRetry}>
         {retryLabel}
       </Button>

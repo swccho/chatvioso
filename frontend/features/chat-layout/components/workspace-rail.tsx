@@ -48,12 +48,13 @@ export function WorkspaceRail({
         icon={<MessageCircle className="size-6" />}
         aria-label="Chatvioso home"
         href="/app"
+        className="text-primary-inverse hover:bg-panel focus-visible:ring-offset-rail"
       />
 
       <div className="mt-2 flex flex-col items-center gap-1">
         {isLoading ? (
           <div
-            className="flex h-10 w-10 items-center justify-center rounded-lg bg-surface-muted text-primary-muted"
+            className="flex h-10 w-10 items-center justify-center rounded-lg bg-panel text-primary-inverse"
             aria-hidden
           >
             <span className="text-xs">…</span>
@@ -61,10 +62,11 @@ export function WorkspaceRail({
         ) : workspaces?.length ? (
           <Dropdown
             align="start"
+            contentClassName="bg-panel border-border-panel text-primary-inverse"
             trigger={
               <button
                 type="button"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface-muted font-medium text-primary transition-colors hover:bg-surface-muted/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-panel font-medium text-primary-inverse transition-colors hover:bg-panel-search focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-rail"
                 aria-label={`Current workspace: ${current?.name ?? "Select workspace"}. Open workspace list`}
                 title={current?.name}
               >
@@ -95,6 +97,7 @@ export function WorkspaceRail({
             icon={<Plus className="size-5" />}
             aria-label="Add workspace"
             onClick={onAddWorkspace}
+            className="text-primary-inverse hover:bg-panel focus-visible:ring-offset-rail"
           />
         ) : null}
       </div>
@@ -115,7 +118,7 @@ export function WorkspaceRail({
     <>
       <nav
         className={cn(
-          "hidden md:flex w-[72px] shrink-0 flex-col items-center gap-1 border-r border-border-muted bg-sidebar py-3",
+          "hidden md:flex w-[72px] shrink-0 flex-col items-center gap-1 border-r border-border-panel bg-rail py-3 text-primary-inverse",
           className
         )}
         aria-label="Workspace rail"
@@ -123,18 +126,19 @@ export function WorkspaceRail({
         {railContent}
       </nav>
 
-      <div className="md:hidden shrink-0 flex items-center justify-center border-r border-border-muted bg-sidebar w-14 py-2 min-h-[44px]">
+      <div className="md:hidden shrink-0 flex items-center justify-center border-r border-border-panel bg-rail w-14 py-2 min-h-[44px] text-primary-inverse">
         <IconButton
           icon={<Menu className="size-5" />}
           aria-label="Open workspace menu"
           variant="ghost"
           size="md"
+          className="text-primary-inverse hover:bg-panel"
           onClick={() => setMobileOpen(true)}
         />
       </div>
 
       <Drawer open={mobileOpen} onOpenChange={setMobileOpen} side="left">
-        <div className="flex w-[72px] flex-col items-center gap-1 bg-sidebar py-3 px-2">
+        <div className="flex w-[72px] flex-col items-center gap-1 bg-rail py-3 px-2 text-primary-inverse">
           {railContent}
         </div>
       </Drawer>
