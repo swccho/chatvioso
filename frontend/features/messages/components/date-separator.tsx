@@ -40,7 +40,7 @@ export function DateSeparator({ date, className }: DateSeparatorProps) {
       role="separator"
       aria-label={`Messages from ${formatDateLabel(date)}`}
     >
-      <span className="text-xs font-medium text-primary-muted bg-surface-muted/80 px-3 py-1.5 rounded-full border border-border-muted">
+      <span className="text-xs font-medium text-primary-inverse bg-panel px-3 py-1.5 rounded-full">
         {formatDateLabel(date)}
       </span>
     </div>

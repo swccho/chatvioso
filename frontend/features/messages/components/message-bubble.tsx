@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { MoreHorizontal, Reply, Pin, Pencil, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { Message } from "@/types/api";
 import { useAddReaction, usePinMessage } from "@/hooks/use-messages";
 import { MessageBubbleText } from "./message-bubble-text";
 import { MessageBubbleMeta } from "./message-bubble-meta";
 import { MessageBubbleAttachments } from "./message-bubble-attachments";
+import { Dropdown, DropdownItem } from "@/components/ui/dropdown";
+import { IconButton } from "@/components/ui/icon-button";
 
 const QUICK_EMOJIS = ["👍", "❤️", "😂", "😮", "😢"];
 
@@ -48,10 +51,10 @@ export function MessageBubble({
   return (
     <div
       className={cn(
-        "group relative rounded-2xl px-3 py-2 shadow-soft",
+        "group relative rounded-2xl px-4 py-2.5 max-w-[85%]",
         isOwn
-          ? "bg-message-own ml-8"
-          : "bg-message-other mr-8"
+          ? "bg-message-own ml-auto"
+          : "bg-message-other mr-0"
       )}
     >
       <div className="flex items-baseline gap-2 flex-wrap">
@@ -108,12 +111,70 @@ export function MessageBubble({
       ) : (
         <>
           <MessageBubbleText isOwn={isOwn}>{message.body}</MessageBubbleText>
-          <MessageBubbleAttachments attachments={message.attachments ?? []} />
-          <div className="flex items-center justify-end gap-2 mt-1">
-            <MessageBubbleMeta time={message.created_at} />
+          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
+            <Dropdown
+              align="end"
+              side="bottom"
+              trigger={
+                <IconButton
+                  icon={<MoreHorizontal className="size-4" />}
+                  aria-label="Message actions"
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 w-7 text-primary-muted hover:text-primary"
+                />
+              }
+            >
+              <div className="py-1">
+                <DropdownItem onClick={() => onReply(message)} className="flex items-center gap-2">
+                  <Reply className="size-4 shrink-0" />
+                  Reply
+                </DropdownItem>
+                {workspaceId && conversationId && (
+                  <DropdownItem
+                    onClick={() =>
+                      pinMessage.mutate({
+                        messageId: message.id,
+                        pin: !message.pinned_at,
+                      })
+                    }
+                    disabled={pinMessage.isPending}
+                    className="flex items-center gap-2"
+                  >
+                    <Pin className="size-4 shrink-0" />
+                    {message.pinned_at ? "Unpin" : "Pin"}
+                  </DropdownItem>
+                )}
+                {isOwn && (
+                  <>
+                    <DropdownItem
+                      onClick={() => {
+                        setEditBody(message.body);
+                        setEditing(true);
+                      }}
+                      className="flex items-center gap-2"
+                    >
+                      <Pencil className="size-4 shrink-0" />
+                      Edit
+                    </DropdownItem>
+                    <DropdownItem
+                      onClick={() => onDelete(message)}
+                      className="flex items-center gap-2 text-state-danger focus:text-state-danger"
+                    >
+                      <Trash2 className="size-4 shrink-0" />
+                      Delete
+                    </DropdownItem>
+                  </>
+                )}
+              </div>
+            </Dropdown>
           </div>
-          {workspaceId && conversationId && (
-            <div className="flex flex-wrap items-center gap-1 mt-1">
+          <MessageBubbleAttachments attachments={message.attachments ?? []} />
+          <div className={cn("flex items-center gap-2 mt-1", isOwn ? "justify-end" : "justify-start")}>
+            <MessageBubbleMeta time={message.created_at} className="text-[11px] opacity-90" />
+          </div>
+          {workspaceId && conversationId && (message.reactions?.length ?? 0) > 0 && (
+            <div className="flex flex-wrap items-center gap-1 mt-1.5">
               {(message.reactions ?? []).map((r) => (
                 <button
                   key={r.emoji}
@@ -123,16 +184,25 @@ export function MessageBubble({
                   }
                   disabled={addReaction.isPending}
                   className={cn(
-                    "text-sm rounded px-1.5 py-0.5 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1",
+                    "text-xs rounded-md px-1.5 py-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1",
                     (message.current_user_reacted ?? []).includes(r.emoji)
-                      ? "bg-brand-soft border-brand"
-                      : "bg-surface-muted border-border-muted hover:bg-surface"
+                      ? "bg-brand-soft/80 text-message-own-text"
+                      : "bg-black/5 text-primary-muted hover:bg-black/10"
                   )}
                   aria-label={`React ${r.emoji} (${r.count})`}
                 >
-                  {r.emoji} {r.count}
+                  {r.emoji} {r.count > 1 ? r.count : ""}
                 </button>
               ))}
+            </div>
+          )}
+          {workspaceId && conversationId && (
+            <div
+              className={cn(
+                "absolute opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5 py-1 px-1.5 rounded-lg border border-border-default bg-surface shadow-card z-10",
+                isOwn ? "bottom-0 right-0 -translate-y-full translate-x-0" : "bottom-0 left-0 -translate-y-full"
+              )}
+            >
               {QUICK_EMOJIS.filter(
                 (e) => !(message.reactions ?? []).some((r) => r.emoji === e)
               ).map((emoji) => (
@@ -143,7 +213,7 @@ export function MessageBubble({
                     addReaction.mutate({ messageId: message.id, emoji })
                   }
                   disabled={addReaction.isPending}
-                  className="text-sm rounded px-1.5 py-0.5 bg-surface-muted border border-border-muted hover:bg-surface opacity-0 group-hover:opacity-100 transition-opacity focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1"
+                  className="p-1 rounded hover:bg-black/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1 text-base leading-none"
                   aria-label={`React with ${emoji}`}
                 >
                   {emoji}
@@ -151,59 +221,6 @@ export function MessageBubble({
               ))}
             </div>
           )}
-          <div
-            className="absolute top-1 right-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity flex gap-1"
-            role="group"
-            aria-label="Message actions"
-          >
-            <button
-              type="button"
-              onClick={() => onReply(message)}
-              className="text-xs text-primary-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1 rounded"
-              aria-label="Reply to this message"
-            >
-              Reply
-            </button>
-            {workspaceId && conversationId && (
-              <button
-                type="button"
-                onClick={() =>
-                  pinMessage.mutate({
-                    messageId: message.id,
-                    pin: !message.pinned_at,
-                  })
-                }
-                disabled={pinMessage.isPending}
-                className="text-xs text-primary-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1 rounded disabled:opacity-50"
-                aria-label={message.pinned_at ? "Unpin" : "Pin"}
-              >
-                {message.pinned_at ? "Unpin" : "Pin"}
-              </button>
-            )}
-            {isOwn && (
-              <>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setEditBody(message.body);
-                    setEditing(true);
-                  }}
-                  className="text-xs text-primary-muted hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-1 rounded"
-                  aria-label="Edit this message"
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onDelete(message)}
-                  className="text-xs text-state-danger hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-state-danger focus-visible:ring-offset-1 rounded"
-                  aria-label="Delete this message"
-                >
-                  Delete
-                </button>
-              </>
-            )}
-          </div>
         </>
       )}
     </div>
